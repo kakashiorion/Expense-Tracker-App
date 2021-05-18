@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330076482085",
+    "project_id": "expense-tracker-fb4b2",
+    "storage_bucket": "expense-tracker-fb4b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330076482085:android:aad26495c88970b9a5adcc",
+        "android_client_info": {
+          "package_name": "com.kakashiorion.expense_tracker_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330076482085-98rauvnp2c01j2kaq15bbvrsq999gnil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMjOMz5wJt09nAKMl49WE6KAgYq7jV_x8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330076482085-98rauvnp2c01j2kaq15bbvrsq999gnil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
