@@ -117,21 +117,23 @@ class _BudgetPageState extends State<BudgetPage> {
         stream: docRef.collection('Budgets').where('Month', isEqualTo: month).where('Year', isEqualTo: year).orderBy('Time').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.active || !snapshot.hasData || snapshot.data.docs?.length == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Image.asset(
-                    'assets/images/empty_folder.png',
-                    width: MediaQuery.of(context).size.width / 1.5,
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Image.asset(
+                      'assets/images/empty_folder.png',
+                      width: MediaQuery.of(context).size.width / 1.5,
+                    ),
                   ),
-                ),
-                Text(
-                  'No budgets found!',
-                  style: appBarTitleText,
-                ),
-              ],
+                  Text(
+                    'No budgets found!',
+                    style: appBarTitleText,
+                  ),
+                ],
+              ),
             );
           } else {
             return Container(

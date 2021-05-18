@@ -1,5 +1,4 @@
 import 'package:expense_tracker_app/transactionSummaryPage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -453,7 +452,7 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                             useLoader: false,
                                             seconds: 2,
                                             backgroundColor: Colors.lightBlue,
-                                            photoSize: size.width / 2,
+                                            photoSize: MediaQuery.of(context).orientation == Orientation.landscape ? size.width / 7 : size.width / 2,
                                             image: Image(
                                               image: AssetImage('assets/images/gifts.png'),
                                             ),

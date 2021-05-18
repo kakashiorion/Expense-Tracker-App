@@ -81,25 +81,32 @@ class _StatisticsPageState extends State<StatisticsPage> {
       length: 2,
       child: Scaffold(
         appBar: TabBar(
-          indicatorWeight: 4,
-          //labelPadding: EdgeInsets.all(5),
+          indicator: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.white,
+              boxShadow: [BoxShadow(offset: Offset(2, 2), blurRadius: 1, spreadRadius: 1, color: Colors.black12)],
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(style: BorderStyle.solid, width: 2, color: Colors.lightBlue)),
+          indicatorWeight: 0,
           indicatorPadding: EdgeInsets.symmetric(
             horizontal: 10,
           ),
           tabs: [
             /**First tab - THIS WEEK**/
             Tab(
+              //
               child: Text(
                 'THIS WEEK',
-                style: appBarTitleText,
+                style: appBarTitleText.copyWith(color: Colors.lightBlue),
               ),
             ),
             /**Second tab - MONTHLY**/
             Tab(
-                child: Text(
-              'MONTHLY',
-              style: appBarTitleText,
-            )),
+              child: Text(
+                'MONTHLY',
+                style: appBarTitleText.copyWith(color: Colors.lightBlue),
+              ),
+            ),
           ],
         ),
         body: TabBarView(
@@ -120,7 +127,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   width: size.width - 30,
                   child: Center(
                       child: Text(
-                    'Suggestion box',
+                    'Total expenses (this week): $thisWeekTotal',
                     style: appBarTitleText,
                   )),
                 ),
@@ -387,8 +394,25 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   ),
                   child: getMonths(),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
-                  height: size.height - 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [BoxShadow(offset: Offset(0.5, 0.5), blurRadius: 0.5, spreadRadius: 0.5, color: Colors.grey[200])],
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  height: 40,
+                  width: size.width - 30,
+                  child: Center(
+                      child: Text(
+                    'Total expenses (this month): $monthTotal',
+                    style: appBarTitleText,
+                  )),
+                ),
+                Container(
+                  height: size.height - 240,
                   child: SingleChildScrollView(
                     child: monthTotal > 0
                         ? Column(

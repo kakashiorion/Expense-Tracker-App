@@ -301,7 +301,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     ),
                   ),
                   Container(
-                    height: size.height - 280,
+                    height: size.height - 300,
                     alignment: Alignment.center,
                     child: Padding(
                         padding: const EdgeInsets.all(5),
