@@ -545,7 +545,7 @@ class _AddTransactionState extends State<AddTransaction>
                                             photoSize: MediaQuery.of(context)
                                                         .orientation ==
                                                     Orientation.landscape
-                                                ? size.width / 7
+                                                ? size.width / 8
                                                 : size.width / 2,
                                             image: Image(
                                               image: AssetImage(

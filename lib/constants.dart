@@ -226,36 +226,38 @@ class TransactionCard extends StatelessWidget {
                 child: getIcon(type),
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width - 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      title,
-                      style: dayText,
+            Expanded(
+              child: Container(
+                //width: MediaQuery.of(context).size.width - 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        title,
+                        style: dayText,
+                      ),
                     ),
-                  ),
-                  time != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            time ?? '',
-                            style: weekdayText,
+                    time != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Text(
+                              time ?? '',
+                              style: weekdayText,
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0,
                           ),
-                        )
-                      : SizedBox(
-                          height: 0,
-                        ),
-                ],
+                  ],
+                ),
               ),
             ),
             Container(
               width: 80,
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: Text(
                 value,
                 style: dayText,

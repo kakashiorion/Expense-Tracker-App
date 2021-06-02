@@ -70,15 +70,17 @@ class _BudgetPageState extends State<BudgetPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      height: 40,
-                      width: size.width - 120,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Text(
-                          'Expense Budgets',
-                          style: appBarTitleText.copyWith(fontSize: 16),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        height: 40,
+                        //width: size.width - 120,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Text(
+                            'Expense Budgets',
+                            style: appBarTitleText.copyWith(fontSize: 16),
+                          ),
                         ),
                       ),
                     ),

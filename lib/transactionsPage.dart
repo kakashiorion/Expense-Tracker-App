@@ -375,72 +375,74 @@ class _TransactionsPageState extends State<TransactionsPage> {
             },
           ),
         ),
-        Container(
-          height: 70,
-          width: size.width - 80,
-          child: ListView(
-            itemExtent: (size.width - 80) / 7,
-            scrollDirection: Axis.horizontal,
-            children:
-                //dailySelected ?
-                <Widget>[
-              DateMonthListTile(
-                  day: days[0],
-                  date: date1,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date1;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[1],
-                  date: date2,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date2;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[2],
-                  date: date3,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date3;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[3],
-                  date: date4,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date4;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[4],
-                  date: date5,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date5;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[5],
-                  date: date6,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date6;
-                    });
-                  }),
-              DateMonthListTile(
-                  day: days[6],
-                  date: date7,
-                  onTap: () {
-                    setState(() {
-                      dateSelected = date7;
-                    });
-                  }),
-            ],
+        Expanded(
+          child: Container(
+            height: 70,
+            //width: size.width - 80,
+            child: ListView(
+              itemExtent: (size.width - 80) / 7,
+              scrollDirection: Axis.horizontal,
+              children:
+                  //dailySelected ?
+                  <Widget>[
+                DateMonthListTile(
+                    day: days[0],
+                    date: date1,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date1;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[1],
+                    date: date2,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date2;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[2],
+                    date: date3,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date3;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[3],
+                    date: date4,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date4;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[4],
+                    date: date5,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date5;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[5],
+                    date: date6,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date6;
+                      });
+                    }),
+                DateMonthListTile(
+                    day: days[6],
+                    date: date7,
+                    onTap: () {
+                      setState(() {
+                        dateSelected = date7;
+                      });
+                    }),
+              ],
+            ),
           ),
         ),
         Container(

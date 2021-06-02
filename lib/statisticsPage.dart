@@ -515,301 +515,308 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     style: appBarTitleText,
                   )),
                 ),
-                Container(
-                  height: size.height - 240,
-                  child: SingleChildScrollView(
-                    child: monthTotal > 0
-                        ? Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 15),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: MediaQuery.of(context).orientation ==
-                                          Orientation.portrait
-                                      ? size.height / 3.5
-                                      : size.height / 2,
-                                  child: Card(
-                                    shadowColor: Colors.grey,
-                                    elevation: 5,
-                                    color: Colors.black,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                        .orientation ==
-                                                    Orientation.portrait
-                                                ? size.width / 2
-                                                : size.width / 4,
-                                            child: PieChart(
-                                              PieChartData(
-                                                centerSpaceRadius: 25,
-                                                sections:
-                                                    getMonthlyPieSectionData(),
-                                                pieTouchData: PieTouchData(
-                                                    touchCallback:
-                                                        (pieTouchResponse) {
-                                                  setState(() {
-                                                    final desiredTouch =
-                                                        pieTouchResponse
-                                                                    .touchInput
-                                                                is! PointerExitEvent &&
+                Expanded(
+                  child: Container(
+                    //height: size.height - 240,
+                    child: SingleChildScrollView(
+                      child: monthTotal > 0
+                          ? Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? size.height / 3.5
+                                            : size.height / 2,
+                                    child: Card(
+                                      shadowColor: Colors.grey,
+                                      elevation: 5,
+                                      color: Colors.black,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                          .orientation ==
+                                                      Orientation.portrait
+                                                  ? size.width / 2
+                                                  : size.width / 4,
+                                              child: PieChart(
+                                                PieChartData(
+                                                  centerSpaceRadius: 25,
+                                                  sections:
+                                                      getMonthlyPieSectionData(),
+                                                  pieTouchData: PieTouchData(
+                                                      touchCallback:
+                                                          (pieTouchResponse) {
+                                                    setState(() {
+                                                      final desiredTouch =
+                                                          pieTouchResponse
+                                                                      .touchInput
+                                                                  is! PointerExitEvent &&
+                                                              pieTouchResponse
+                                                                      .touchInput
+                                                                  is! PointerUpEvent;
+                                                      if (desiredTouch &&
+                                                          pieTouchResponse
+                                                                  .touchedSection !=
+                                                              null) {
+                                                        touchIndex =
                                                             pieTouchResponse
-                                                                    .touchInput
-                                                                is! PointerUpEvent;
-                                                    if (desiredTouch &&
-                                                        pieTouchResponse
-                                                                .touchedSection !=
-                                                            null) {
-                                                      touchIndex = pieTouchResponse
-                                                          .touchedSection
-                                                          .touchedSectionIndex;
-                                                    } else {
-                                                      touchIndex = -1;
-                                                    }
-                                                  });
-                                                }),
+                                                                .touchedSection
+                                                                .touchedSectionIndex;
+                                                      } else {
+                                                        touchIndex = -1;
+                                                      }
+                                                    });
+                                                  }),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                        .orientation ==
-                                                    Orientation.portrait
-                                                ? size.width / 4
-                                                : size.width / 9,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Row(children: [
-                                                  Container(
-                                                    color: foodColor,
-                                                    height: 18,
-                                                    width: 18,
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                          .orientation ==
+                                                      Orientation.portrait
+                                                  ? size.width / 4
+                                                  : size.width / 9,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Row(children: [
+                                                    Container(
+                                                      color: foodColor,
+                                                      height: 18,
+                                                      width: 18,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    RichText(
+                                                        text: TextSpan(
+                                                            text: 'Food',
+                                                            style: labelText,
+                                                            children: [
+                                                          TextSpan(
+                                                            text:
+                                                                ' \n ${foodMonthTotal.toStringAsFixed(2)}',
+                                                            style: valueText,
+                                                          ),
+                                                        ]))
+                                                  ]),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        color: travelColor,
+                                                        height: 18,
+                                                        width: 18,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      RichText(
+                                                          text: TextSpan(
+                                                              text: 'Travel',
+                                                              style: labelText,
+                                                              children: [
+                                                            TextSpan(
+                                                              text:
+                                                                  ' \n ${travelMonthTotal.toStringAsFixed(2)}',
+                                                              style: valueText,
+                                                            ),
+                                                          ]))
+                                                    ],
                                                   ),
-                                                  SizedBox(
-                                                    width: 5,
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        color: utilityColor,
+                                                        height: 18,
+                                                        width: 18,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      RichText(
+                                                          text: TextSpan(
+                                                              text: 'Utility',
+                                                              style: labelText,
+                                                              children: [
+                                                            TextSpan(
+                                                              text:
+                                                                  ' \n ${utilityMonthTotal.toStringAsFixed(2)}',
+                                                              style: valueText,
+                                                            ),
+                                                          ]))
+                                                    ],
                                                   ),
-                                                  RichText(
-                                                      text: TextSpan(
-                                                          text: 'Food',
-                                                          style: labelText,
-                                                          children: [
-                                                        TextSpan(
-                                                          text:
-                                                              ' \n ${foodMonthTotal.toStringAsFixed(2)}',
-                                                          style: valueText,
-                                                        ),
-                                                      ]))
-                                                ]),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      color: travelColor,
-                                                      height: 18,
-                                                      width: 18,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    RichText(
-                                                        text: TextSpan(
-                                                            text: 'Travel',
-                                                            style: labelText,
-                                                            children: [
-                                                          TextSpan(
-                                                            text:
-                                                                ' \n ${travelMonthTotal.toStringAsFixed(2)}',
-                                                            style: valueText,
-                                                          ),
-                                                        ]))
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      color: utilityColor,
-                                                      height: 18,
-                                                      width: 18,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    RichText(
-                                                        text: TextSpan(
-                                                            text: 'Utility',
-                                                            style: labelText,
-                                                            children: [
-                                                          TextSpan(
-                                                            text:
-                                                                ' \n ${utilityMonthTotal.toStringAsFixed(2)}',
-                                                            style: valueText,
-                                                          ),
-                                                        ]))
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      color: shoppingColor,
-                                                      height: 18,
-                                                      width: 18,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    RichText(
-                                                        text: TextSpan(
-                                                            text: 'Shopping',
-                                                            style: labelText,
-                                                            children: [
-                                                          TextSpan(
-                                                            text:
-                                                                ' \n ${shoppingMonthTotal.toStringAsFixed(2)}',
-                                                            style: valueText,
-                                                          ),
-                                                        ]))
-                                                  ],
-                                                ),
-                                              ],
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        color: shoppingColor,
+                                                        height: 18,
+                                                        width: 18,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      RichText(
+                                                          text: TextSpan(
+                                                              text: 'Shopping',
+                                                              style: labelText,
+                                                              children: [
+                                                            TextSpan(
+                                                              text:
+                                                                  ' \n ${shoppingMonthTotal.toStringAsFixed(2)}',
+                                                              style: valueText,
+                                                            ),
+                                                          ]))
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(15),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: MediaQuery.of(context).orientation ==
-                                          Orientation.portrait
-                                      ? size.height / 3.5
-                                      : size.height / 2,
-                                  child: Card(
-                                    shadowColor: Colors.grey,
-                                    elevation: 5,
-                                    color: Colors.black,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Stack(
-                                        children: [
-                                          Positioned(
-                                            bottom: 0,
-                                            left: 0,
-                                            child: Row(children: [
-                                              Container(
-                                                color: Colors.white,
-                                                height: 12,
-                                                width: 12,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text('Budget', style: labelText),
-                                            ]),
-                                          ),
-                                          BarChart(
-                                            BarChartData(
-                                              alignment:
-                                                  BarChartAlignment.center,
-                                              barTouchData: BarTouchData(
-                                                enabled: true,
-                                              ),
-                                              titlesData: FlTitlesData(
-                                                show: true,
-                                                bottomTitles: SideTitles(
-                                                  showTitles: true,
-                                                  getTextStyles: (value) =>
-                                                      const TextStyle(
-                                                          color:
-                                                              Color(0xff939393),
-                                                          fontSize: 12,
-                                                          fontFamily: 'Lato'),
-                                                  margin: 5,
-                                                  getTitles: (double value) {
-                                                    switch (value.toInt()) {
-                                                      case 0:
-                                                        return 'Food';
-                                                      case 1:
-                                                        return 'Travel';
-                                                      case 2:
-                                                        return 'Utility';
-                                                      case 3:
-                                                        return 'Shopping';
-                                                      default:
-                                                        return '';
-                                                    }
-                                                  },
+                                Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height:
+                                        MediaQuery.of(context).orientation ==
+                                                Orientation.portrait
+                                            ? size.height / 3.5
+                                            : size.height / 2,
+                                    child: Card(
+                                      shadowColor: Colors.grey,
+                                      elevation: 5,
+                                      color: Colors.black,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                              bottom: 0,
+                                              left: 0,
+                                              child: Row(children: [
+                                                Container(
+                                                  color: Colors.white,
+                                                  height: 12,
+                                                  width: 12,
                                                 ),
-                                                leftTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTextStyles:
-                                                            (value) =>
-                                                                const TextStyle(
-                                                                    color:
-                                                                        Color(
-                                                                      0xff939393,
-                                                                    ),
-                                                                    fontSize:
-                                                                        10),
-                                                        margin: 12,
-                                                        interval: [
-                                                              foodMonthTotal,
-                                                              travelMonthTotal,
-                                                              utilityMonthTotal,
-                                                              shoppingMonthTotal,
-                                                              travelBudget,
-                                                              foodBudget,
-                                                              shoppingBudget,
-                                                              utilityBudget,
-                                                              2
-                                                            ].reduce(max) /
-                                                            2.ceilToDouble()) ??
-                                                    null,
-                                              ),
-                                              borderData: FlBorderData(
-                                                show: false,
-                                              ),
-                                              groupsSpace: 35,
-                                              barGroups: getMonthlyBarData(),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text('Budget',
+                                                    style: labelText),
+                                              ]),
                                             ),
-                                          ),
-                                        ],
+                                            BarChart(
+                                              BarChartData(
+                                                alignment:
+                                                    BarChartAlignment.center,
+                                                barTouchData: BarTouchData(
+                                                  enabled: true,
+                                                ),
+                                                titlesData: FlTitlesData(
+                                                  show: true,
+                                                  bottomTitles: SideTitles(
+                                                    showTitles: true,
+                                                    getTextStyles: (value) =>
+                                                        const TextStyle(
+                                                            color: Color(
+                                                                0xff939393),
+                                                            fontSize: 12,
+                                                            fontFamily: 'Lato'),
+                                                    margin: 5,
+                                                    getTitles: (double value) {
+                                                      switch (value.toInt()) {
+                                                        case 0:
+                                                          return 'Food';
+                                                        case 1:
+                                                          return 'Travel';
+                                                        case 2:
+                                                          return 'Utility';
+                                                        case 3:
+                                                          return 'Shopping';
+                                                        default:
+                                                          return '';
+                                                      }
+                                                    },
+                                                  ),
+                                                  leftTitles: SideTitles(
+                                                          showTitles: true,
+                                                          getTextStyles:
+                                                              (value) =>
+                                                                  const TextStyle(
+                                                                      color:
+                                                                          Color(
+                                                                        0xff939393,
+                                                                      ),
+                                                                      fontSize:
+                                                                          10),
+                                                          margin: 12,
+                                                          interval: [
+                                                                foodMonthTotal,
+                                                                travelMonthTotal,
+                                                                utilityMonthTotal,
+                                                                shoppingMonthTotal,
+                                                                travelBudget,
+                                                                foodBudget,
+                                                                shoppingBudget,
+                                                                utilityBudget,
+                                                                2
+                                                              ].reduce(max) /
+                                                              2.ceilToDouble()) ??
+                                                      null,
+                                                ),
+                                                borderData: FlBorderData(
+                                                  show: false,
+                                                ),
+                                                groupsSpace: 35,
+                                                barGroups: getMonthlyBarData(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20.0),
-                                child: Image.asset(
-                                  'assets/images/empty_folder.png',
-                                  height:
-                                      MediaQuery.of(context).size.height / 2.5,
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0),
+                                  child: Image.asset(
+                                    'assets/images/empty_folder.png',
+                                    height: MediaQuery.of(context).size.height /
+                                        2.5,
+                                  ),
                                 ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'No data for this month!',
-                                  style: appBarTitleText,
+                                Center(
+                                  child: Text(
+                                    'No data for this month!',
+                                    style: appBarTitleText,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                    ),
                   ),
                 ),
               ],
