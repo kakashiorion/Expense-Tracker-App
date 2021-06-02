@@ -25,6 +25,8 @@ class _SignUpPageState extends State<SignUpPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: false,
+          leading: null,
           title: Text(
             'Expense Tracker App Sign Up',
             style: appBarTitleText,
@@ -33,7 +35,10 @@ class _SignUpPageState extends State<SignUpPage> {
           backgroundColor: Colors.white,
           elevation: 1,
           bottomOpacity: 1.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20))),
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 20, top: 10, bottom: 10),
@@ -69,15 +74,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Sign up to Expense Tracker',
-                        style: TextStyle(fontSize: 25, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                        'Sign up for Expense Tracker',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 5,
                       ),
                       Text(
-                        'Start tracking your daily financial transactions in one place and manage budget for different categories of expenses',
-                        style: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.normal),
+                        'Start tracking your daily financial transactions in one place and managing budget for different categories of expenses',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.normal),
                       ),
                     ],
                   ),
@@ -86,7 +97,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   alignment: Alignment.center,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: Container(height: 180, child: Image.asset('assets/images/investment.png')),
+                    child: Container(
+                        height: 180,
+                        child: Image.asset('assets/images/investment.png')),
                   ),
                 ),
                 Padding(
@@ -96,7 +109,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       Text(
                         'Name',
-                        style: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -116,7 +132,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
                       hintText: 'John Doe',
-                      hintStyle: TextStyle(fontSize: 15, fontFamily: 'Lato', fontWeight: FontWeight.normal, color: Colors.black26),
+                      hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black26),
                     ),
                     style: TextStyle(
                       fontSize: 20,
@@ -129,7 +149,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: EdgeInsets.only(left: 30, right: 30),
                   child: Text(
                     'Email',
-                    style: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
@@ -146,7 +169,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
                       hintText: 'abcd@gmail.com',
-                      hintStyle: TextStyle(fontSize: 15, fontFamily: 'Lato', fontWeight: FontWeight.normal, color: Colors.black26),
+                      hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black26),
                     ),
                     style: TextStyle(
                       fontSize: 20,
@@ -159,7 +186,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: EdgeInsets.only(left: 30, right: 30),
                   child: Text(
                     'Password',
-                    style: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
@@ -175,12 +205,17 @@ class _SignUpPageState extends State<SignUpPage> {
                             });
                           },
                           textInputAction: TextInputAction.done,
-                          onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                          onEditingComplete: () =>
+                              FocusScope.of(context).nextFocus(),
                           obscureText: true,
                           decoration: InputDecoration(
                             alignLabelWithHint: true,
                             hintText: '********',
-                            hintStyle: TextStyle(fontSize: 15, fontFamily: 'Lato', fontWeight: FontWeight.normal, color: Colors.black26),
+                            hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black26),
                           ),
                           style: TextStyle(
                             fontSize: 20,
@@ -193,8 +228,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         width: 50,
                       ),
                       Container(
-                        decoration:
-                            BoxDecoration(borderRadius: BorderRadius.circular(10), color: password.length != 0 ? Colors.lightBlue : Colors.grey),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: password.length != 0
+                                ? Colors.lightBlue
+                                : Colors.grey),
                         child: IconButton(
                             enableFeedback: false,
                             color: Colors.white,
@@ -204,16 +242,25 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             onPressed: () async {
                               try {
-                                final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+                                final newUser =
+                                    await _auth.createUserWithEmailAndPassword(
+                                        email: email, password: password);
                                 if (newUser != null) {
-                                  users.doc(email).set({'Name': name, 'Email': email, 'Password': password, 'Date Of Birth': dob});
+                                  users.doc(email).set({
+                                    'Name': name,
+                                    'Email': email,
+                                    'Password': password,
+                                    'Date Of Birth': dob
+                                  });
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Created account for: ' + newUser.user.email),
+                                      content: Text('Created account for: ' +
+                                          newUser.user.email),
                                       action: SnackBarAction(
                                         label: 'Login Page',
                                         onPressed: () {
-                                          Navigator.pop(context, newUser.user.email);
+                                          Navigator.pop(
+                                              context, newUser.user.email);
                                         },
                                       ),
                                     ),
@@ -233,14 +280,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                  padding:
+                      const EdgeInsets.only(left: 30, right: 30, bottom: 10),
                   child: Text(
                     'Date Of Birth (Optional)',
-                    style: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+                  padding:
+                      const EdgeInsets.only(left: 30, right: 30, bottom: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -314,10 +366,18 @@ class _SignUpPageState extends State<SignUpPage> {
   Future pickDate(context) async {
     DateTime initialDate = DateTime.now();
     final dateOfBirth = await showDatePicker(
-        initialEntryMode: DatePickerEntryMode.input, context: context, initialDate: initialDate, firstDate: DateTime(1960), lastDate: DateTime.now());
+        initialEntryMode: DatePickerEntryMode.input,
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(1960),
+        lastDate: DateTime.now());
     if (dateOfBirth == null) return '';
     setState(() {
-      dob = dateOfBirth.day.toString() + '-' + dateOfBirth.month.toString() + '-' + dateOfBirth.year.toString();
+      dob = dateOfBirth.day.toString() +
+          '-' +
+          dateOfBirth.month.toString() +
+          '-' +
+          dateOfBirth.year.toString();
     });
   }
 }

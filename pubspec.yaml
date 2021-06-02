@@ -32,13 +32,12 @@ dependencies:
   path_provider: any
   path: any
   google_sign_in: ^5.0.2
-  swipedetector: 1.2.0
+  swipedetector: ^1.2.0
   currency_picker: ^2.0.4
   syncfusion_flutter_charts: ^19.1.63
   fl_chart: ^0.36.1
   splashscreen:
   firebase_storage:
-  firebase_messaging:
 
 
 

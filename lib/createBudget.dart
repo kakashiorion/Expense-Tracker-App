@@ -187,7 +187,8 @@ class _CreateBudgetState extends State<CreateBudget> {
                             },
                             label: Text(
                               currencySelected,
-                              style: TextStyle(fontSize: 16, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
                             ),
                             icon: Icon(
                               Icons.keyboard_arrow_down,
@@ -212,7 +213,10 @@ class _CreateBudgetState extends State<CreateBudget> {
                               cursorColor: Colors.black,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                  filled: true, fillColor: Colors.white, contentPadding: EdgeInsets.all(10), border: OutlineInputBorder()),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.all(10),
+                                  border: OutlineInputBorder()),
                               style: displayTextStyle),
                         ),
                       ],
@@ -226,12 +230,17 @@ class _CreateBudgetState extends State<CreateBudget> {
                         width: MediaQuery.of(context).size.width / 3,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              elevation: 5, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), primary: Colors.lightBlue),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              primary: Colors.lightBlue),
                           onPressed: () {
                             // if (budgetTitle == null || budgetTitle == '') {
                             //   budgetTitle = '$expenseTypeSelected budget';
                             // }
-                            final docRef = FirebaseFirestore.instance.collection('users').doc(email);
+                            final docRef = FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(email);
                             //Add Budget details to Firestore
                             docRef.collection('Budgets').add({
                               'Type': expenseTypeSelected,
@@ -247,7 +256,10 @@ class _CreateBudgetState extends State<CreateBudget> {
 
                           child: Text(
                             'Create',
-                            style: TextStyle(color: Colors.white, fontFamily: 'Lato', fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.normal),
                           ),
 
                           // backgroundColor: Colors.lightBlue,
@@ -316,50 +328,54 @@ class MonthYearListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5, right: 5),
-      child: Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              //border: Border.all(style: BorderStyle.solid, color: Colors.grey),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 1), // changes position of shadow
-                ),
-              ],
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
+      padding: EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          //border: Border.all(style: BorderStyle.solid, color: Colors.grey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(0, 1), // changes position of shadow
             ),
-            height: 50,
-            child: TextButton(
-              style: (monthSelected == month && yearSelected == year) ? TextButton.styleFrom(backgroundColor: Colors.lightBlue) : null,
-              onPressed: onTap,
-              child: Column(
-                children: [
-                  Text(
-                    Months.values[month - 1].toString().substring(7, 10),
-                    style: dayText.copyWith(color: (monthSelected == month && yearSelected == year) ? Colors.white : Colors.black),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    year.toString(),
-                    style: dayText.copyWith(
-                        fontSize: 9,
-                        fontWeight: FontWeight.normal,
-                        color: (monthSelected == month && yearSelected == year) ? Colors.white : Colors.black),
-                  ),
-                ],
-              ),
-            ),
+          ],
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
           ),
-        ],
+        ),
+        height: 50,
+        child: TextButton(
+          style: (monthSelected == month && yearSelected == year)
+              ? TextButton.styleFrom(backgroundColor: Colors.lightBlue)
+              : null,
+          onPressed: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                Months.values[month - 1].toString().substring(7, 10),
+                style: dayText.copyWith(
+                    color: (monthSelected == month && yearSelected == year)
+                        ? Colors.white
+                        : Colors.black),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                year.toString(),
+                style: dayText.copyWith(
+                    fontSize: 9,
+                    fontWeight: FontWeight.normal,
+                    color: (monthSelected == month && yearSelected == year)
+                        ? Colors.white
+                        : Colors.black),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -386,7 +402,9 @@ class ExpenseTypeCard extends StatelessWidget {
               offset: Offset(0, 1), // changes position of shadow
             ),
           ],
-          color: expenseType == expenseTypeSelected ? Colors.lightBlue : Colors.white,
+          color: expenseType == expenseTypeSelected
+              ? Colors.lightBlue
+              : Colors.white,
           border: Border.all(color: Colors.lightBlue, width: 0.5),
           borderRadius: BorderRadius.all(
             Radius.circular(10),
@@ -401,7 +419,9 @@ class ExpenseTypeCard extends StatelessWidget {
               Container(
                 child: Icon(
                   icon,
-                  color: expenseType == expenseTypeSelected ? Colors.white : Colors.black,
+                  color: expenseType == expenseTypeSelected
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
               SizedBox(
@@ -409,7 +429,11 @@ class ExpenseTypeCard extends StatelessWidget {
               ),
               Text(
                 expenseType,
-                style: appBarTitleText.copyWith(color: expenseType == expenseTypeSelected ? Colors.white : Colors.black, fontSize: 12),
+                style: appBarTitleText.copyWith(
+                    color: expenseType == expenseTypeSelected
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 12),
               )
             ],
           ),

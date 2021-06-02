@@ -50,8 +50,16 @@ class _BudgetPageState extends State<BudgetPage> {
           height: 120,
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [BoxShadow(offset: Offset(0.5, 0.5), blurRadius: 0.5, spreadRadius: 0.5, color: Colors.grey[200])],
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0.5, 0.5),
+                  blurRadius: 0.5,
+                  spreadRadius: 0.5,
+                  color: Colors.grey[200])
+            ],
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -81,7 +89,8 @@ class _BudgetPageState extends State<BudgetPage> {
                         width: 40,
                         child: IconButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
                               return CreateBudget();
                             }));
                           },
@@ -114,9 +123,16 @@ class _BudgetPageState extends State<BudgetPage> {
 
   Widget displayBudgets(int month, int year) {
     return StreamBuilder(
-        stream: docRef.collection('Budgets').where('Month', isEqualTo: month).where('Year', isEqualTo: year).orderBy('Time').snapshots(),
+        stream: docRef
+            .collection('Budgets')
+            .where('Month', isEqualTo: month)
+            .where('Year', isEqualTo: year)
+            .orderBy('Time')
+            .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.active || !snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (snapshot.connectionState != ConnectionState.active ||
+              !snapshot.hasData ||
+              snapshot.data.docs?.length == 0) {
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,7 +141,7 @@ class _BudgetPageState extends State<BudgetPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: Image.asset(
                       'assets/images/empty_folder.png',
-                      width: MediaQuery.of(context).size.width / 1.5,
+                      height: MediaQuery.of(context).size.height / 2.5,
                     ),
                   ),
                   Text(
@@ -147,27 +163,39 @@ class _BudgetPageState extends State<BudgetPage> {
                     final title = snapshot.data.docs[index]['Title'];
                     final id = snapshot.data.docs[index].id;
                     final time = snapshot.data.docs[index]['Time'];
-                    Widget totalValueWidget = txnValue(month, year, type, currency, limit);
+                    Widget totalValueWidget =
+                        txnValue(month, year, type, currency, limit.toDouble());
                     return Dismissible(
                       key: UniqueKey(),
                       background: Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.redAccent[100],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.black,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.redAccent[100],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                      //size: 20,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Text(
+                                  'Swipe to Delete',
+                                  style: weekdayText,
+                                )
+                              ],
                             ),
                           )),
                       direction: DismissDirection.startToEnd,
@@ -182,8 +210,15 @@ class _BudgetPageState extends State<BudgetPage> {
                             action: SnackBarAction(
                               label: 'UNDO',
                               onPressed: () {
-                                docRef.collection('Budgets').add(
-                                    {'Type': type, 'Title': title, 'Limit': limit, 'Month': month, 'Year': year, 'Currency': currency, 'Time': time});
+                                docRef.collection('Budgets').add({
+                                  'Type': type,
+                                  'Title': title,
+                                  'Limit': limit,
+                                  'Month': month,
+                                  'Year': year,
+                                  'Currency': currency,
+                                  'Time': time
+                                });
                               },
                             ),
                           ),
@@ -202,7 +237,8 @@ class _BudgetPageState extends State<BudgetPage> {
         });
   }
 
-  Widget txnValue(int month, int year, String type, String currency, double limit) {
+  Widget txnValue(
+      int month, int year, String type, String currency, double limit) {
     return StreamBuilder(
         stream: docRef
             .collection('Transactions')
@@ -312,7 +348,9 @@ class _BudgetPageState extends State<BudgetPage> {
         year1 += 1;
       }
     }
-    ScrollController scrollController = ScrollController(initialScrollOffset: (size.width - 40) * x * 12 / (365 * 6), keepScrollOffset: true);
+    ScrollController scrollController = ScrollController(
+        initialScrollOffset: (size.width - 40) * x * 12 / (365 * 6),
+        keepScrollOffset: true);
 
     return Container(
       height: 70,
@@ -337,42 +375,43 @@ class MonthYearListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5, right: 5),
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 50,
-            child: TextButton(
-              style: (monthSelected == month && yearSelected == year) ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50]) : null,
-              onPressed: onTap,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    Months.values[month - 1].toString().substring(7, 10),
-                    style: dayText,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    year.toString(),
-                    style: dayText.copyWith(fontSize: 9, fontWeight: FontWeight.normal),
-                  ),
-                ],
+      padding: EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 8),
+      child: SizedBox(
+        height: 50,
+        child: TextButton(
+          style: (monthSelected == month && yearSelected == year)
+              ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
+              : null,
+          onPressed: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 2,
               ),
-            ),
+              Text(
+                Months.values[month - 1].toString().substring(7, 10),
+                style: dayText,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                year.toString(),
+                style: dayText.copyWith(
+                    fontSize: 9, fontWeight: FontWeight.normal),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 class BudgetTile extends StatelessWidget {
-  BudgetTile({this.budgetTitle, this.budgetValue, this.budgetCategory, this.currency});
+  BudgetTile(
+      {this.budgetTitle, this.budgetValue, this.budgetCategory, this.currency});
 
   final String budgetTitle;
   final Widget budgetValue;
@@ -404,10 +443,10 @@ class BudgetTile extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: Offset(0, 2), // changes position of shadow
+              color: Colors.red.withOpacity(0.4),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(-2, 0), // changes position of shadow
             ),
           ],
           color: Colors.white,
@@ -427,14 +466,13 @@ class BudgetTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(color: Colors.lightBlue[100], borderRadius: new BorderRadius.circular(5.0)),
-                        height: 40,
-                        width: 40,
-                        child: getIcon(budgetCategory),
-                      ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.lightBlue[100],
+                          borderRadius: new BorderRadius.circular(5.0)),
+                      height: 40,
+                      width: 40,
+                      child: getIcon(budgetCategory),
                     ),
                     SizedBox(
                       width: 10,

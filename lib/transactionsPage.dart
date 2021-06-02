@@ -204,7 +204,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           child: TextButton(
                             style: dailySelected
                                 ? TextButton.styleFrom(
-                                    backgroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)))
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(8.0)))
                                 : null,
                             onPressed: () {
                               setState(() {
@@ -213,7 +216,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             },
                             child: Text(
                               'Daily',
-                              style: TextStyle(color: dailySelected ? Colors.black : Colors.white, fontSize: 12, fontFamily: 'Lato'),
+                              style: TextStyle(
+                                  color: dailySelected
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Lato'),
                             ),
                           ),
                         ),
@@ -222,7 +230,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             style: dailySelected
                                 ? null
                                 : TextButton.styleFrom(
-                                    backgroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0))),
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(8.0))),
                             onPressed: () {
                               setState(() {
                                 dailySelected = false;
@@ -230,7 +241,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             },
                             child: Text(
                               'Monthly',
-                              style: TextStyle(color: dailySelected ? Colors.white : Colors.black, fontSize: 12, fontFamily: 'Lato'),
+                              style: TextStyle(
+                                  color: dailySelected
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12,
+                                  fontFamily: 'Lato'),
                             ),
                           ),
                         ),
@@ -245,13 +261,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
           Container(
             width: size.width,
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15, bottom: 0),
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, bottom: 0),
                     child: Container(
                       height: 30,
                       width: size.width / 3,
@@ -278,7 +295,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             icon: Icon(Icons.keyboard_arrow_down),
                             //iconDisabledColor: Colors.grey,
                             iconEnabledColor: Colors.lightBlue,
-                            style: TextStyle(color: Colors.lightBlue, fontSize: 11, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.lightBlue,
+                                fontSize: 11,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.bold),
                             dropdownColor: Colors.white,
                             value: dropDownValue,
                             onChanged: (newValue) {
@@ -286,8 +307,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 dropDownValue = newValue;
                               });
                             },
-                            items: <String>['All Transactions', 'Food', 'Travel', 'Shopping', 'Utility', 'Income']
-                                .map<DropdownMenuItem<String>>((String value) {
+                            items: <String>[
+                              'All Transactions',
+                              'Food',
+                              'Travel',
+                              'Shopping',
+                              'Utility',
+                              'Income'
+                            ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(
@@ -301,17 +328,20 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     ),
                   ),
                   Container(
-                    height: size.height - 300,
+                    height: size.height - 200,
                     alignment: Alignment.center,
                     child: Padding(
                         padding: const EdgeInsets.all(5),
                         child: dropDownValue == 'All Transactions'
                             ? dailySelected
                                 ? displayDayTransactions(dateSelected)
-                                : displayMonthTransactions(monthSelected, yearSelected)
+                                : displayMonthTransactions(
+                                    monthSelected, yearSelected)
                             : dailySelected
-                                ? displayDayTransactionsByType(dateSelected, dropDownValue)
-                                : displayMonthTransactionsByType(monthSelected, yearSelected, dropDownValue)),
+                                ? displayDayTransactionsByType(
+                                    dateSelected, dropDownValue)
+                                : displayMonthTransactionsByType(monthSelected,
+                                    yearSelected, dropDownValue)),
                   ),
                 ],
               ),
@@ -564,6 +594,27 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  Widget notFound(context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Image.asset(
+              'assets/images/empty_folder.png',
+              height: MediaQuery.of(context).size.height / 3,
+            ),
+          ),
+          Text(
+            'No transactions found!',
+            style: appBarTitleText,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget displayDayTransactions(DateTime date) {
     return StreamBuilder(
         stream: docRef
@@ -575,22 +626,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Image.asset(
-                    'assets/images/empty_folder.png',
-                    width: MediaQuery.of(context).size.width / 1.5,
-                  ),
-                ),
-                Text(
-                  'No transactions found!',
-                  style: appBarTitleText,
-                ),
-              ],
-            );
+            return notFound(context);
           } else {
             return ListView.separated(
                 padding: EdgeInsets.all(5),
@@ -601,7 +637,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemBuilder: (context, index) {
                   return TransactionCard(
                     title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] + ' ' + snapshot.data.docs[index]['Amount'].toString(),
+                    value: snapshot.data.docs[index]['Currency'] +
+                        ' ' +
+                        snapshot.data.docs[index]['Amount'].toString(),
                     //time: snapshot.data.docs[index]['Time'],
                     type: snapshot.data.docs[index]['Type'],
                     tId: snapshot.data.docs[index].id,
@@ -623,22 +661,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Image.asset(
-                    'assets/images/empty_folder.png',
-                    width: MediaQuery.of(context).size.width / 1.5,
-                  ),
-                ),
-                Text(
-                  'No transactions found!',
-                  style: appBarTitleText,
-                ),
-              ],
-            );
+            return notFound(context);
           } else {
             return ListView.separated(
                 padding: EdgeInsets.all(5),
@@ -649,7 +672,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemBuilder: (context, index) {
                   return TransactionCard(
                     title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] + ' ' + snapshot.data.docs[index]['Amount'].toString(),
+                    value: snapshot.data.docs[index]['Currency'] +
+                        ' ' +
+                        snapshot.data.docs[index]['Amount'].toString(),
                     //time: snapshot.data.docs[index]['Time'],
                     type: snapshot.data.docs[index]['Type'],
                     tId: snapshot.data.docs[index].id,
@@ -670,22 +695,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Image.asset(
-                    'assets/images/empty_folder.png',
-                    width: MediaQuery.of(context).size.width / 1.5,
-                  ),
-                ),
-                Text(
-                  'No transactions found!',
-                  style: appBarTitleText,
-                ),
-              ],
-            );
+            return notFound(context);
           } else {
             return ListView.separated(
                 padding: EdgeInsets.all(5),
@@ -696,11 +706,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemBuilder: (context, index) {
                   return TransactionCard(
                     title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] + ' ' + snapshot.data.docs[index]['Amount'].toString(),
+                    value: snapshot.data.docs[index]['Currency'] +
+                        ' ' +
+                        snapshot.data.docs[index]['Amount'].toString(),
                     time:
                         // snapshot.data.docs[index]['Time'] +
                         //     ' ' +
-                        months[snapshot.data.docs[index]['Month'] - 1].toString() + ' ' + snapshot.data.docs[index]['Day'].toString(),
+                        months[snapshot.data.docs[index]['Month'] - 1]
+                                .toString() +
+                            ' ' +
+                            snapshot.data.docs[index]['Day'].toString(),
                     type: snapshot.data.docs[index]['Type'],
                     tId: snapshot.data.docs[index].id,
                   );
@@ -709,7 +724,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
         });
   }
 
-  Widget displayMonthTransactionsByType(int month, int year, String transactionType) {
+  Widget displayMonthTransactionsByType(
+      int month, int year, String transactionType) {
     return StreamBuilder(
         stream: docRef
             .collection('Transactions')
@@ -721,22 +737,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Image.asset(
-                    'assets/images/empty_folder.png',
-                    width: MediaQuery.of(context).size.width / 1.5,
-                  ),
-                ),
-                Text(
-                  'No transactions found!',
-                  style: appBarTitleText,
-                ),
-              ],
-            );
+            return notFound(context);
           } else {
             return ListView.separated(
                 padding: EdgeInsets.all(5),
@@ -747,11 +748,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemBuilder: (context, index) {
                   return TransactionCard(
                     title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] + ' ' + snapshot.data.docs[index]['Amount'].toString(),
+                    value: snapshot.data.docs[index]['Currency'] +
+                        ' ' +
+                        snapshot.data.docs[index]['Amount'].toString(),
                     time:
                         //snapshot.data.docs[index]['Time'] +
                         //     ' ' +
-                        months[snapshot.data.docs[index]['Month'] - 1].toString() + ' ' + snapshot.data.docs[index]['Day'].toString(),
+                        months[snapshot.data.docs[index]['Month'] - 1]
+                                .toString() +
+                            ' ' +
+                            snapshot.data.docs[index]['Day'].toString(),
                     type: snapshot.data.docs[index]['Type'],
                     tId: snapshot.data.docs[index].id,
                   );
@@ -782,9 +788,12 @@ class DateMonthListTile extends StatelessWidget {
           SizedBox(
             height: 40,
             child: TextButton(
-              style: (dateSelected == date) ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50]) : null,
+              style: (dateSelected == date)
+                  ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
+                  : null,
               onPressed: onTap,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     date.day.toString(),
@@ -814,15 +823,18 @@ class MonthYearListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5, right: 5),
+      padding: EdgeInsets.all(5),
       child: Column(
         children: <Widget>[
           SizedBox(
             height: 60,
             child: TextButton(
-              style: (monthSelected == month && yearSelected == year) ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50]) : null,
+              style: (monthSelected == month && yearSelected == year)
+                  ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
+                  : null,
               onPressed: onTap,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     height: 5,
@@ -836,7 +848,8 @@ class MonthYearListTile extends StatelessWidget {
                   ),
                   Text(
                     year.toString(),
-                    style: dayText.copyWith(fontSize: 9, fontWeight: FontWeight.normal),
+                    style: dayText.copyWith(
+                        fontSize: 9, fontWeight: FontWeight.normal),
                   ),
                 ],
               ),

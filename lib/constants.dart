@@ -3,14 +3,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const List<String> months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
 
 enum Weekdays { Mon, Tue, Wed, Thu, Fri, Sat, Sun }
-enum Months { January, February, March, April, May, June, July, August, September, October, November, December }
+enum Months {
+  January,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December
+}
 enum TransactionType { Food, Travel, Shopping, Utility, Income }
 const double _kMyLinearProgressIndicatorHeight = 0.5;
 
-class MyLinearProgressIndicator extends LinearProgressIndicator implements PreferredSizeWidget {
+class MyLinearProgressIndicator extends LinearProgressIndicator
+    implements PreferredSizeWidget {
   MyLinearProgressIndicator({
     this.minHeight,
     this.value,
@@ -18,7 +45,8 @@ class MyLinearProgressIndicator extends LinearProgressIndicator implements Prefe
     this.valueColor,
   });
 
-  final preferredSize = Size(double.infinity, _kMyLinearProgressIndicatorHeight);
+  final preferredSize =
+      Size(double.infinity, _kMyLinearProgressIndicatorHeight);
 
   final double minHeight;
   final double value;
@@ -96,7 +124,10 @@ class _TransactionDetailTileState extends State<TransactionDetailTile> {
             child: CircleAvatar(
               child: widget.icon,
               radius: 18,
-              backgroundColor: widget.type == TransactionType.Income.toString().substring(16) ? Colors.green : Colors.lightBlue,
+              backgroundColor:
+                  widget.type == TransactionType.Income.toString().substring(16)
+                      ? Colors.green
+                      : Colors.lightBlue,
               foregroundColor: Colors.white,
             ),
           ),
@@ -174,7 +205,10 @@ class TransactionCard extends StatelessWidget {
         enableFeedback: false,
       ),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => TransactionSummaryPage(tId)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (builder) => TransactionSummaryPage(tId)));
       },
       child: Card(
         margin: EdgeInsets.all(0),
@@ -184,7 +218,9 @@ class TransactionCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(5.0),
               child: Container(
-                decoration: BoxDecoration(color: Colors.lightBlue[100], borderRadius: new BorderRadius.circular(5.0)),
+                decoration: BoxDecoration(
+                    color: Colors.lightBlue[100],
+                    borderRadius: new BorderRadius.circular(5.0)),
                 height: 40,
                 width: 40,
                 child: getIcon(type),
@@ -203,13 +239,17 @@ class TransactionCard extends StatelessWidget {
                       style: dayText,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      time ?? '',
-                      style: weekdayText,
-                    ),
-                  ),
+                  time != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            time ?? '',
+                            style: weekdayText,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 0,
+                        ),
                 ],
               ),
             ),
@@ -239,7 +279,13 @@ class TransactionInputTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [BoxShadow(offset: Offset(1, 1), blurRadius: 1, spreadRadius: 1, color: Colors.grey)],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(1, 1),
+              blurRadius: 1,
+              spreadRadius: 1,
+              color: Colors.grey)
+        ],
         borderRadius: new BorderRadius.circular(8.0),
       ),
       child: Padding(
@@ -257,7 +303,8 @@ class TransactionInputTile extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       title,
-                      style: titleTextStyle.copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: titleTextStyle.copyWith(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
@@ -297,7 +344,9 @@ class TransactionTypeTile extends StatelessWidget {
             ),
             elevation: 8,
             shadowColor: Colors.grey,
-            primary: type == TransactionType.Income ? Colors.green : Colors.lightBlue,
+            primary: type == TransactionType.Income
+                ? Colors.green
+                : Colors.lightBlue,
           ),
           onPressed: onTap,
           child: Row(
@@ -306,8 +355,10 @@ class TransactionTypeTile extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: CircleAvatar(
                   child: getImage(type),
-                  radius: 15,
-                  backgroundColor: type == TransactionType.Income ? Colors.green : Colors.lightBlue,
+                  radius: 12,
+                  backgroundColor: type == TransactionType.Income
+                      ? Colors.green
+                      : Colors.lightBlue,
                   foregroundColor: Colors.white,
                 ),
               ),
@@ -315,7 +366,11 @@ class TransactionTypeTile extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
                   type.toString().substring(16),
-                  style: TextStyle(fontFamily: 'Lato', fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
+                  style: TextStyle(
+                      fontFamily: 'Lato',
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               )
             ],
@@ -343,21 +398,43 @@ Icon getImage(type) {
   }
 }
 
-const budgetText = TextStyle(color: Colors.black, fontSize: 12, fontFamily: 'Lato');
+const budgetText =
+    TextStyle(color: Colors.black, fontSize: 12, fontFamily: 'Lato');
 
-const inputTextStyle = TextStyle(fontSize: 16, fontFamily: 'Lato', fontWeight: FontWeight.bold, color: Colors.black);
+const inputTextStyle = TextStyle(
+    fontSize: 16,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold,
+    color: Colors.black);
 
-const displayTextStyle = TextStyle(fontSize: 18, fontFamily: 'Lato', fontWeight: FontWeight.bold, color: Colors.black);
+const displayTextStyle = TextStyle(
+    fontSize: 18,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold,
+    color: Colors.black);
 
-TextStyle titleTextStyle = TextStyle(fontSize: 10, fontFamily: 'Lato', color: Colors.grey[600]);
+TextStyle titleTextStyle =
+    TextStyle(fontSize: 10, fontFamily: 'Lato', color: Colors.grey[600]);
 
-const weekdayText = TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Lato');
+const weekdayText =
+    TextStyle(color: Colors.grey, fontSize: 10, fontFamily: 'Lato');
 
-const titleText = TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Lato');
+const titleText =
+    TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Lato');
 
-const labelText = TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Lato');
-const valueText = TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Lato');
+const labelText =
+    TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Lato');
+const valueText =
+    TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Lato');
 
-const dayText = TextStyle(color: Colors.black, fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold);
+const dayText = TextStyle(
+    color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold);
 
-const appBarTitleText = TextStyle(color: Colors.black, fontSize: 15, fontFamily: 'Lato', fontWeight: FontWeight.bold);
+const appBarTitleText = TextStyle(
+    color: Colors.black,
+    fontSize: 15,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold);

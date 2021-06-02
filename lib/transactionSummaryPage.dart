@@ -10,7 +10,8 @@ class TransactionSummaryPage extends StatefulWidget {
   final transactionId;
 
   @override
-  _TransactionSummaryPageState createState() => _TransactionSummaryPageState(transactionId);
+  _TransactionSummaryPageState createState() =>
+      _TransactionSummaryPageState(transactionId);
 }
 
 class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
@@ -24,7 +25,11 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      docRef = FirebaseFirestore.instance.collection('users').doc(user.email).collection('Transactions').doc(transactionId);
+      docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.email)
+          .collection('Transactions')
+          .doc(transactionId);
     }
     setTransactionValues();
   }
@@ -92,14 +97,17 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                     children: [
                       Padding(
                         padding: editing
-                            ? const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20)
-                            : const EdgeInsets.only(top: 30, bottom: 20, left: 40, right: 40),
+                            ? const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 20, right: 20)
+                            : const EdgeInsets.only(
+                                top: 30, bottom: 20, left: 40, right: 40),
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Edit type of transaction',
                                 inputWidget: DropdownButton<String>(
                                   value: type,
-                                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_outlined),
                                   iconSize: 16,
                                   elevation: 2,
                                   style: inputTextStyle,
@@ -108,7 +116,14 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                       type = newValue;
                                     });
                                   },
-                                  items: <String>['Food', 'Travel', 'Utility', 'Shopping', 'Income'].map<DropdownMenuItem<String>>((String value) {
+                                  items: <String>[
+                                    'Food',
+                                    'Travel',
+                                    'Utility',
+                                    'Shopping',
+                                    'Income'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -125,8 +140,10 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                       ),
                       Padding(
                         padding: editing
-                            ? const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20)
-                            : const EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 40),
+                            ? const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 20, right: 20)
+                            : const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 40, right: 40),
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change transaction details',
@@ -139,7 +156,8 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                     cursorColor: Colors.black,
                                     decoration: InputDecoration(
                                         hintText: 'Groceries',
-                                        hintStyle: titleText.copyWith(fontSize: 14),
+                                        hintStyle:
+                                            titleText.copyWith(fontSize: 14),
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding: EdgeInsets.all(10),
@@ -155,8 +173,10 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                       ),
                       Padding(
                         padding: editing
-                            ? const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20)
-                            : const EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 40),
+                            ? const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 20, right: 20)
+                            : const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 40, right: 40),
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change amount',
@@ -171,15 +191,19 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                               showFlag: true,
                                               showCurrencyName: true,
                                               showCurrencyCode: true,
-                                              onSelect: (Currency currencySelection) {
+                                              onSelect:
+                                                  (Currency currencySelection) {
                                                 setState(() {
-                                                  currency = currencySelection.code;
+                                                  currency =
+                                                      currencySelection.code;
                                                 });
                                               });
                                         },
                                         label: Text(
                                           currency,
-                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
                                         ),
                                         icon: Icon(
                                           Icons.keyboard_arrow_down,
@@ -197,7 +221,8 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                               });
                                             } else {
                                               setState(() {
-                                                amount = double.tryParse(detailsText);
+                                                amount = double.tryParse(
+                                                    detailsText);
                                               });
                                             }
                                           },
@@ -206,7 +231,8 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                           decoration: InputDecoration(
                                               filled: true,
                                               fillColor: Colors.white,
-                                              contentPadding: EdgeInsets.all(10),
+                                              contentPadding:
+                                                  EdgeInsets.all(10),
                                               border: OutlineInputBorder()),
                                           style: displayTextStyle),
                                     ),
@@ -215,15 +241,19 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                               )
                             : TransactionDetailTile(
                                 title: 'Amount',
-                                icon: Icon(Icons.account_balance_wallet_outlined),
-                                details: currency + ' ' + amount.toStringAsFixed(2),
+                                icon:
+                                    Icon(Icons.account_balance_wallet_outlined),
+                                details:
+                                    currency + ' ' + amount.toStringAsFixed(2),
                                 type: type,
                               ),
                       ),
                       Padding(
                         padding: editing
-                            ? const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20)
-                            : const EdgeInsets.only(top: 20, bottom: 30, left: 40, right: 40),
+                            ? const EdgeInsets.only(
+                                top: 10, bottom: 10, left: 20, right: 20)
+                            : const EdgeInsets.only(
+                                top: 20, bottom: 30, left: 40, right: 40),
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change date of transaction',
@@ -248,7 +278,13 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                       SizedBox(
                                         width: 30,
                                       ),
-                                      Text(day.toString() + ' ' + months[month - 1] + ' ' + year.toString(), style: displayTextStyle),
+                                      Text(
+                                          day.toString() +
+                                              ' ' +
+                                              months[month - 1] +
+                                              ' ' +
+                                              year.toString(),
+                                          style: displayTextStyle),
                                     ],
                                   ),
                                 ),
@@ -256,7 +292,12 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                             : TransactionDetailTile(
                                 title: 'DateTime',
                                 icon: Icon(Icons.calendar_today_sharp),
-                                details: day.toString() + ' ' + months[month - 1] + ' ' + year.toString() + ' ',
+                                details: day.toString() +
+                                    ' ' +
+                                    months[month - 1] +
+                                    ' ' +
+                                    year.toString() +
+                                    ' ',
                                 type: type,
                               ),
                       ),
@@ -264,7 +305,8 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10, left: 30, right: 30),
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 10, left: 30, right: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -293,13 +335,17 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Colors.white,
-                            side: BorderSide(color: editing ? Colors.green : Colors.lightBlue),
+                            side: BorderSide(
+                                color:
+                                    editing ? Colors.green : Colors.lightBlue),
                             elevation: 2,
                             shadowColor: Colors.white,
                           ),
                           child: Text(
                             editing ? 'Save' : 'Edit',
-                            style: dayText.copyWith(color: editing ? Colors.green : Colors.lightBlue),
+                            style: dayText.copyWith(
+                                color:
+                                    editing ? Colors.green : Colors.lightBlue),
                           ),
                         ),
                       ),
@@ -313,10 +359,13 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: Text('Delete this transaction?'),
+                                          title:
+                                              Text('Delete this transaction?'),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: Text('YES', style: dayText.copyWith(color: Colors.redAccent)),
+                                              child: Text('YES',
+                                                  style: dayText.copyWith(
+                                                      color: Colors.redAccent)),
                                               onPressed: () {
                                                 deleted = true;
                                                 Navigator.of(context).pop();
@@ -346,7 +395,8 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                 ),
                                 child: Text(
                                   'Delete',
-                                  style: dayText.copyWith(color: Colors.redAccent),
+                                  style:
+                                      dayText.copyWith(color: Colors.redAccent),
                                 ),
                               ),
                       )
@@ -363,7 +413,11 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
 
   Future pickDate(context) async {
     DateTime initialDate = DateTime.now();
-    final dateOfTransaction = await showDatePicker(context: context, initialDate: initialDate, firstDate: DateTime(2010), lastDate: DateTime.now());
+    final dateOfTransaction = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(2010),
+        lastDate: DateTime.now());
     if (dateOfTransaction == null) return '';
     setState(() {
       day = dateOfTransaction.day;
@@ -373,31 +427,32 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
   }
 
   Icon getIcon(String type) {
+    var iconColor = Colors.white;
     Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
       icon = Icon(
         Icons.fastfood_outlined,
-        color: Colors.black,
+        color: iconColor,
       );
     } else if (type == TransactionType.Shopping.toString().substring(16)) {
       icon = Icon(
         Icons.shopping_basket_outlined,
-        color: Colors.black,
+        color: iconColor,
       );
     } else if (type == TransactionType.Travel.toString().substring(16)) {
       icon = Icon(
         Icons.flight_outlined,
-        color: Colors.black,
+        color: iconColor,
       );
     } else if (type == TransactionType.Utility.toString().substring(16)) {
       icon = Icon(
         Icons.wb_incandescent_outlined,
-        color: Colors.black,
+        color: iconColor,
       );
     } else if (type == TransactionType.Income.toString().substring(16)) {
       icon = Icon(
         Icons.attach_money_outlined,
-        color: Colors.black,
+        color: iconColor,
       );
     }
     return icon;

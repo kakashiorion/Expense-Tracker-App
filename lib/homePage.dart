@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/constants.dart';
 import 'package:expense_tracker_app/profilePage.dart';
 import 'package:expense_tracker_app/statisticsPage.dart';
 import 'package:expense_tracker_app/transactionsPage.dart';
@@ -37,88 +38,136 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: activeIndex == 0
-            ? SizedBox(
-                height: 45,
-                child: FloatingActionButton(
-                  //shape: CircleBorder(side: BorderSide(width: 0, color: Colors.white)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return AddTransaction();
-                      }),
-                    );
-                  },
-                  backgroundColor: Colors.lightBlue,
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          floatingActionButton: activeIndex == 0
+              ? SizedBox(
+                  height: 45,
+                  child: FloatingActionButton(
+                    //shape: CircleBorder(side: BorderSide(width: 0, color: Colors.white)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return AddTransaction();
+                        }),
+                      );
+                    },
+                    backgroundColor: Colors.lightBlue,
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              )
-            : null,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        backgroundColor: Colors.white,
-        extendBody: true,
-        body: SwipeDetector(
-          onSwipeRight: () {
-            setState(() {
-              activeIndex -= 1;
-              if (activeIndex == -1) activeIndex = 3;
-            });
-          },
-          onSwipeLeft: () {
-            setState(() {
-              activeIndex += 1;
-              if (activeIndex == 4) activeIndex = 0;
-            });
-          },
-          child: activeIndex == 0
-              ? TransactionsPage()
-              : activeIndex == 1
-                  ? BudgetPage()
-                  : activeIndex == 2
-                      ? StatisticsPage()
-                      : ProfilePage(),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          notchMargin: 0,
-          color: Colors.black,
-          shape: CircularNotchedRectangle(),
-          child: BottomNavigationBar(
-            onTap: (selectedBottomIndex) {
+                )
+              : null,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          backgroundColor: Colors.white,
+          extendBody: true,
+          // appBar: PreferredSize(
+          //   preferredSize: Size.fromHeight(40),
+          //   child: AppBar(
+          //     centerTitle: false,
+          //     title: Text(
+          //       getAppBarTitle(activeIndex),
+          //       style: appBarTitleText,
+          //     ),
+          //     backgroundColor: Colors.white,
+          //     elevation: 2,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.only(
+          //           bottomLeft: Radius.circular(8),
+          //           bottomRight: Radius.circular(8)),
+          //     ),
+          //   ),
+          // ),
+          body: SwipeDetector(
+            onSwipeRight: () {
               setState(() {
-                activeIndex = selectedBottomIndex;
+                activeIndex -= 1;
+                if (activeIndex == -1) activeIndex = 3;
               });
             },
-            currentIndex: activeIndex,
-            selectedIconTheme: IconThemeData(opacity: 1.0),
-            unselectedIconTheme: IconThemeData(opacity: 1.0, color: Colors.white70),
-            selectedItemColor: Colors.lightBlue,
-            unselectedItemColor: Colors.white70,
-            selectedLabelStyle: TextStyle(fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 12,
-              fontFamily: 'Lato',
-            ),
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.attach_money_outlined),
-                label: 'Transactions',
+            onSwipeLeft: () {
+              setState(() {
+                activeIndex += 1;
+                if (activeIndex == 4) activeIndex = 0;
+              });
+            },
+            child: activeIndex == 0
+                ? TransactionsPage()
+                : activeIndex == 1
+                    ? BudgetPage()
+                    : activeIndex == 2
+                        ? StatisticsPage()
+                        : ProfilePage(),
+          ),
+          bottomNavigationBar: BottomAppBar(
+            notchMargin: 0,
+            color: Colors.black,
+            shape: CircularNotchedRectangle(),
+            child: BottomNavigationBar(
+              onTap: (selectedBottomIndex) {
+                setState(() {
+                  activeIndex = selectedBottomIndex;
+                });
+              },
+              currentIndex: activeIndex,
+              selectedIconTheme: IconThemeData(opacity: 1.0),
+              unselectedIconTheme:
+                  IconThemeData(opacity: 1.0, color: Colors.white70),
+              selectedItemColor: Colors.lightBlue,
+              unselectedItemColor: Colors.white70,
+              selectedLabelStyle: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(
+                fontSize: 12,
+                fontFamily: 'Lato',
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet_outlined), label: 'Budget'),
-              BottomNavigationBarItem(icon: Icon(Icons.stacked_bar_chart), label: 'Statistics'),
-              BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
-            ],
+              showUnselectedLabels: true,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.attach_money_outlined),
+                  label: 'Transactions',
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.account_balance_wallet_outlined),
+                    label: 'Budget'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.stacked_bar_chart), label: 'Statistics'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person_outline), label: 'Profile'),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  String getAppBarTitle(int activeIndex) {
+    switch (activeIndex) {
+      case 0:
+        return 'Transactions';
+        break;
+      case 1:
+        return 'Your Budgets';
+        break;
+      case 2:
+        return 'Statistics';
+        break;
+      case 3:
+        return 'Profile';
+        break;
+    }
   }
 }

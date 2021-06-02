@@ -14,7 +14,8 @@ class AddTransaction extends StatefulWidget {
 
 TransactionType transactionTypeSelected;
 
-class _AddTransactionState extends State<AddTransaction> with SingleTickerProviderStateMixin {
+class _AddTransactionState extends State<AddTransaction>
+    with SingleTickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   User loggedInUser;
@@ -101,16 +102,18 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                         child: Column(children: [
                           progressValue == 1
                               ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Column(children: [
                                       Container(
                                         alignment: Alignment.topCenter,
-                                        width: double.infinity,
+                                        //height: size.height / 2.5,
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
                                           child: Image.asset(
                                             'assets/images/money_saving.png',
-                                            height: size.width / 2,
+                                            height: size.height / 2.5,
                                           ),
                                         ),
                                       ),
@@ -118,27 +121,44 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                         child: Column(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(top: 20, bottom: 10, left: 40, right: 40),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 40,
+                                                  right: 40),
                                               child: Text(
                                                 'What kind of transaction is it?',
-                                                style: TextStyle(fontSize: 25, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+                                                style: TextStyle(
+                                                    fontSize: 25,
+                                                    fontFamily: 'Lato',
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 30,
+                                                  right: 30,
+                                                  top: 5,
+                                                  bottom: 5),
                                               child: Row(
                                                 children: [
                                                   Expanded(
                                                     child: TransactionTypeTile(
                                                       onTap: () {
                                                         setState(() {
-                                                          transactionTypeSelected = TransactionType.Food;
+                                                          transactionTypeSelected =
+                                                              TransactionType
+                                                                  .Food;
                                                           progressValue += 1;
                                                         });
                                                       },
-                                                      type: TransactionType.Food,
-                                                      circleAvatar: CircleAvatar(
-                                                        backgroundColor: Colors.black,
+                                                      type:
+                                                          TransactionType.Food,
+                                                      circleAvatar:
+                                                          CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   ),
@@ -146,13 +166,18 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                                     child: TransactionTypeTile(
                                                       onTap: () {
                                                         setState(() {
-                                                          transactionTypeSelected = TransactionType.Travel;
+                                                          transactionTypeSelected =
+                                                              TransactionType
+                                                                  .Travel;
                                                           progressValue += 1;
                                                         });
                                                       },
-                                                      type: TransactionType.Travel,
-                                                      circleAvatar: CircleAvatar(
-                                                        backgroundColor: Colors.black,
+                                                      type: TransactionType
+                                                          .Travel,
+                                                      circleAvatar:
+                                                          CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   )
@@ -160,20 +185,29 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 30,
+                                                  right: 30,
+                                                  top: 5,
+                                                  bottom: 5),
                                               child: Row(
                                                 children: [
                                                   Expanded(
                                                     child: TransactionTypeTile(
                                                       onTap: () {
                                                         setState(() {
-                                                          transactionTypeSelected = TransactionType.Shopping;
+                                                          transactionTypeSelected =
+                                                              TransactionType
+                                                                  .Shopping;
                                                           progressValue += 1;
                                                         });
                                                       },
-                                                      type: TransactionType.Shopping,
-                                                      circleAvatar: CircleAvatar(
-                                                        backgroundColor: Colors.black,
+                                                      type: TransactionType
+                                                          .Shopping,
+                                                      circleAvatar:
+                                                          CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   ),
@@ -181,13 +215,18 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                                     child: TransactionTypeTile(
                                                       onTap: () {
                                                         setState(() {
-                                                          transactionTypeSelected = TransactionType.Utility;
+                                                          transactionTypeSelected =
+                                                              TransactionType
+                                                                  .Utility;
                                                           progressValue += 1;
                                                         });
                                                       },
-                                                      type: TransactionType.Utility,
-                                                      circleAvatar: CircleAvatar(
-                                                        backgroundColor: Colors.black,
+                                                      type: TransactionType
+                                                          .Utility,
+                                                      circleAvatar:
+                                                          CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   )
@@ -195,27 +234,40 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 40, right: 40, top: 5, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 40,
+                                                  right: 40,
+                                                  top: 5,
+                                                  bottom: 5),
                                               child: Container(
                                                 height: 2,
                                                 color: Colors.black12,
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  left: 30,
+                                                  right: 30,
+                                                  top: 5,
+                                                  bottom: 5),
                                               child: Row(
                                                 children: [
                                                   Expanded(
                                                     child: TransactionTypeTile(
                                                       onTap: () {
                                                         setState(() {
-                                                          transactionTypeSelected = TransactionType.Income;
+                                                          transactionTypeSelected =
+                                                              TransactionType
+                                                                  .Income;
                                                           progressValue += 1;
                                                         });
                                                       },
-                                                      type: TransactionType.Income,
-                                                      circleAvatar: CircleAvatar(
-                                                        backgroundColor: Colors.black,
+                                                      type: TransactionType
+                                                          .Income,
+                                                      circleAvatar:
+                                                          CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.black,
                                                       ),
                                                     ),
                                                   ),
@@ -231,34 +283,49 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                               : SizedBox(),
                           progressValue >= 2
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 40, right: 40),
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 40, right: 40),
                                   child: TransactionDetailTile(
                                     title: 'Transaction type',
                                     icon: getImage(transactionTypeSelected),
-                                    details: transactionTypeSelected.toString().substring(16),
-                                    type: transactionTypeSelected.toString().substring(16),
+                                    details: transactionTypeSelected
+                                        .toString()
+                                        .substring(16),
+                                    type: transactionTypeSelected
+                                        .toString()
+                                        .substring(16),
                                   ),
                                 )
                               : SizedBox(),
                           progressValue >= 3
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 40, right: 40),
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 40, right: 40),
                                   child: TransactionDetailTile(
                                     title: 'Transaction details',
-                                    icon: Icon(Icons.wifi_protected_setup_outlined),
+                                    icon: Icon(
+                                        Icons.wifi_protected_setup_outlined),
                                     details: transactionDetails,
-                                    type: transactionTypeSelected.toString().substring(16),
+                                    type: transactionTypeSelected
+                                        .toString()
+                                        .substring(16),
                                   ),
                                 )
                               : SizedBox(),
                           progressValue >= 4
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 40, right: 40),
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 40, right: 40),
                                   child: TransactionDetailTile(
                                     title: 'Amount',
-                                    icon: Icon(Icons.account_balance_wallet_outlined),
-                                    details: currencySelected + ' ' + amountDetails.toString(),
-                                    type: transactionTypeSelected.toString().substring(16),
+                                    icon: Icon(
+                                        Icons.account_balance_wallet_outlined),
+                                    details: currencySelected +
+                                        ' ' +
+                                        amountDetails.toString(),
+                                    type: transactionTypeSelected
+                                        .toString()
+                                        .substring(16),
                                   ),
                                 )
                               : SizedBox(),
@@ -269,7 +336,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
               progressValue == 2
                   ? Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 30, right: 30),
+                        padding: const EdgeInsets.only(
+                            top: 5, bottom: 5, left: 30, right: 30),
                         child: TransactionInputTile(
                           title: 'What is the transaction about?',
                           inputWidget: TextField(
@@ -291,7 +359,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                           actionWidget: FloatingActionButton(
                             elevation: 2,
                             onPressed: () {
-                              if (transactionDetails != null && transactionDetails != '') {
+                              if (transactionDetails != null &&
+                                  transactionDetails != '') {
                                 setState(() {
                                   progressValue = 3;
                                 });
@@ -310,7 +379,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
               progressValue == 3
                   ? Container(
                       child: Padding(
-                          padding: const EdgeInsets.only(top: 5, bottom: 5, left: 30, right: 30),
+                          padding: const EdgeInsets.only(
+                              top: 5, bottom: 5, left: 30, right: 30),
                           //Show Transaction details
                           child: TransactionInputTile(
                             title: 'Enter amount',
@@ -333,7 +403,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                     },
                                     label: Text(
                                       currencySelected,
-                                      style: TextStyle(fontSize: 16, color: Colors.black),
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black),
                                     ),
                                     icon: Icon(
                                       Icons.keyboard_arrow_down,
@@ -351,14 +422,18 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                           });
                                         } else {
                                           setState(() {
-                                            amountDetails = double.tryParse(detailsText);
+                                            amountDetails =
+                                                double.tryParse(detailsText);
                                           });
                                         }
                                       },
                                       cursorColor: Colors.black,
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
-                                          filled: true, fillColor: Colors.white, contentPadding: EdgeInsets.all(10), border: OutlineInputBorder()),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          contentPadding: EdgeInsets.all(10),
+                                          border: OutlineInputBorder()),
                                       style: displayTextStyle),
                                 ),
                               ],
@@ -366,10 +441,12 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                             actionWidget: FloatingActionButton(
                               elevation: 2,
                               onPressed: () {
-                                if (amountDetails != null && amountDetails != 0.0) {
+                                if (amountDetails != null &&
+                                    amountDetails != 0.0) {
                                   setState(() {
                                     progressValue = 4;
-                                    amountDetails = double.parse(amountDetails.toStringAsFixed(2));
+                                    amountDetails = double.parse(
+                                        amountDetails.toStringAsFixed(2));
                                   });
                                 }
                               },
@@ -385,7 +462,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
               progressValue == 4
                   ? Container(
                       child: Padding(
-                          padding: const EdgeInsets.only(top: 5, bottom: 5, left: 30, right: 30),
+                          padding: const EdgeInsets.only(
+                              top: 5, bottom: 5, left: 30, right: 30),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -394,7 +472,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                   inputWidget: Padding(
                                     padding: const EdgeInsets.only(left: 20.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: 55,
@@ -412,7 +491,8 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                         SizedBox(
                                           width: 30,
                                         ),
-                                        Text(formatDate(dateDetails), style: displayTextStyle),
+                                        Text(formatDate(dateDetails),
+                                            style: displayTextStyle),
                                       ],
                                     ),
                                   ),
@@ -424,15 +504,25 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                   width: MediaQuery.of(context).size.width / 3,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        textStyle: TextStyle(color: Colors.pink, fontFamily: 'Lato', fontSize: 16, fontWeight: FontWeight.bold),
+                                        textStyle: TextStyle(
+                                            color: Colors.pink,
+                                            fontFamily: 'Lato',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                         elevation: 5,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
                                         primary: Colors.lightBlue),
                                     onPressed: () async {
                                       DocumentReference txnId;
                                       //Add Transaction details to Firestore
-                                      txnId = await docRef.collection('Transactions').add({
-                                        'Type': transactionTypeSelected.toString().substring(16),
+                                      txnId = await docRef
+                                          .collection('Transactions')
+                                          .add({
+                                        'Type': transactionTypeSelected
+                                            .toString()
+                                            .substring(16),
                                         'Details': transactionDetails,
                                         'Amount': amountDetails,
                                         'Day': dateDetails.day,
@@ -452,22 +542,32 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
                                             useLoader: false,
                                             seconds: 2,
                                             backgroundColor: Colors.lightBlue,
-                                            photoSize: MediaQuery.of(context).orientation == Orientation.landscape ? size.width / 7 : size.width / 2,
+                                            photoSize: MediaQuery.of(context)
+                                                        .orientation ==
+                                                    Orientation.landscape
+                                                ? size.width / 7
+                                                : size.width / 2,
                                             image: Image(
-                                              image: AssetImage('assets/images/gifts.png'),
+                                              image: AssetImage(
+                                                  'assets/images/gifts.png'),
                                             ),
                                             title: Text(
                                               'Congrats.. Transaction added!',
                                               style: inputTextStyle,
                                             ),
-                                            navigateAfterSeconds: TransactionSummaryPage(txnId.id),
+                                            navigateAfterSeconds:
+                                                TransactionSummaryPage(
+                                                    txnId.id),
                                           ),
                                         ),
                                       );
                                     },
                                     child: Text(
                                       'Finish',
-                                      style: TextStyle(color: Colors.white, fontFamily: 'Lato', fontWeight: FontWeight.normal),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.normal),
                                     ),
                                     // backgroundColor: Colors.lightBlue,
                                   ),
@@ -486,7 +586,11 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
 
   Future pickDate(context) async {
     DateTime initialDate = DateTime.now();
-    final dateOfTransaction = await showDatePicker(context: context, initialDate: initialDate, firstDate: DateTime(2010), lastDate: DateTime.now());
+    final dateOfTransaction = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(2010),
+        lastDate: DateTime.now());
     if (dateOfTransaction == null) return '';
     setState(() {
       dateDetails = dateOfTransaction;
@@ -494,6 +598,10 @@ class _AddTransactionState extends State<AddTransaction> with SingleTickerProvid
   }
 
   String formatDate(DateTime dateTime) {
-    return dateTime.day.toString() + '-' + dateTime.month.toString() + '-' + dateTime.year.toString();
+    return dateTime.day.toString() +
+        '-' +
+        dateTime.month.toString() +
+        '-' +
+        dateTime.year.toString();
   }
 }

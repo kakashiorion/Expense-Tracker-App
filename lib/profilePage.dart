@@ -47,11 +47,17 @@ class _ProfilePageState extends State<ProfilePage> {
   void getUserDetails() {
     email = loggedInUser.email;
 
-    FirebaseFirestore.instance.collection('users').doc(email).get().then((DocumentSnapshot documentSnapshot) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(email)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          if (documentSnapshot.data()['Name'] != null) name = documentSnapshot.data()['Name'];
-          if (documentSnapshot.data()['Date Of Birth'] != null) dob = documentSnapshot.data()['Date Of Birth'];
+          if (documentSnapshot.data()['Name'] != null)
+            name = documentSnapshot.data()['Name'];
+          if (documentSnapshot.data()['Date Of Birth'] != null)
+            dob = documentSnapshot.data()['Date Of Birth'];
           if (documentSnapshot.data()['Photo Location'] != null) {
             imageLocation = documentSnapshot.data()['Photo Location'];
             takingPicture = true;
@@ -74,8 +80,16 @@ class _ProfilePageState extends State<ProfilePage> {
           alignment: Alignment.topCenter,
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [BoxShadow(offset: Offset(0.5, 0.5), blurRadius: 0.5, spreadRadius: 0.5, color: Colors.grey[200])],
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0.5, 0.5),
+                  blurRadius: 0.5,
+                  spreadRadius: 0.5,
+                  color: Colors.grey[200])
+            ],
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -94,19 +108,24 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: OutlinedButton(
                     onPressed: () async {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                      await _auth.signOut();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return LoginPage();
                       }));
-                      await _auth.signOut();
                     },
-                    style: ButtonStyle(side: MaterialStateProperty.all(BorderSide(color: Colors.lightBlue))),
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(
+                            BorderSide(color: Colors.lightBlue))),
                     child: Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Logout',
-                            style: titleText.copyWith(color: Colors.lightBlue, fontWeight: FontWeight.bold),
+                            style: titleText.copyWith(
+                                color: Colors.lightBlue,
+                                fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             width: 5,
@@ -130,7 +149,13 @@ class _ProfilePageState extends State<ProfilePage> {
             alignment: Alignment.topCenter,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [BoxShadow(offset: Offset(1, 1), blurRadius: 2, spreadRadius: 2, color: Colors.grey[300])],
+              boxShadow: [
+                BoxShadow(
+                    offset: Offset(1, 1),
+                    blurRadius: 2,
+                    spreadRadius: 2,
+                    color: Colors.grey[300])
+              ],
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Padding(
@@ -143,25 +168,31 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       CircleAvatar(
-                        backgroundImage: getPicture(takingPicture, imageLocation),
+                        backgroundImage:
+                            getPicture(takingPicture, imageLocation),
                         minRadius: 40,
                       ),
                       SizedBox(
                         height: 30,
                         child: TextButton(
                             onPressed: () async {
-                              dynamic resultLocation = await editProfilePicture(context);
+                              dynamic resultLocation =
+                                  await editProfilePicture(context);
                               if (resultLocation != null) {
                                 setState(() {
                                   takingPicture = true;
                                   imageLocation = resultLocation;
                                 });
-                                users.doc(email).update({'Photo Location': imageLocation});
+                                users
+                                    .doc(email)
+                                    .update({'Photo Location': imageLocation});
                               }
                             },
                             child: Text(
                               'Edit Photo',
-                              style: weekdayText.copyWith(color: Colors.lightBlue, fontWeight: FontWeight.bold),
+                              style: weekdayText.copyWith(
+                                  color: Colors.lightBlue,
+                                  fontWeight: FontWeight.bold),
                             )),
                       ),
                     ],
@@ -259,7 +290,7 @@ class _ProfilePageState extends State<ProfilePage> {
       } else {
         picture = AssetImage('assets/images/profPhoto.jpg');
       }
-    } on Exception catch (e) {
+    } catch (e) {
       print(e);
       picture = AssetImage('assets/images/profPhoto.jpg');
     }
@@ -274,7 +305,8 @@ Future<dynamic> editProfilePicture(context) async {
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras[0];
   //final secondCamera = cameras[1];
-  final resultLocation = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+  final resultLocation =
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
     return TakePictureScreen(
       camera1: firstCamera,
     );
