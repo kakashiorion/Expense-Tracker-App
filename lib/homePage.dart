@@ -1,4 +1,3 @@
-import 'package:expense_tracker_app/constants.dart';
 import 'package:expense_tracker_app/profilePage.dart';
 import 'package:expense_tracker_app/statisticsPage.dart';
 import 'package:expense_tracker_app/transactionsPage.dart';
@@ -168,6 +167,8 @@ class _HomePageState extends State<HomePage> {
       case 3:
         return 'Profile';
         break;
+      default:
+        return 'Transactions';
     }
   }
 }
