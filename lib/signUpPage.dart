@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -245,32 +244,30 @@ class _SignUpPageState extends State<SignUpPage> {
                                 final newUser =
                                     await _auth.createUserWithEmailAndPassword(
                                         email: email, password: password);
-                                if (newUser != null) {
-                                  users.doc(email).set({
-                                    'Name': name,
-                                    'Email': email,
-                                    'Password': password,
-                                    'Date Of Birth': dob
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Created account for: ' +
-                                          newUser.user.email),
-                                      action: SnackBarAction(
-                                        label: 'Login Page',
-                                        onPressed: () {
-                                          Navigator.pop(
-                                              context, newUser.user.email);
-                                        },
-                                      ),
+                                users.doc(email).set({
+                                  'Name': name,
+                                  'Email': email,
+                                  'Password': password,
+                                  'Date Of Birth': dob
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Created account for: ${newUser.user!.email}'),
+                                    action: SnackBarAction(
+                                      label: 'Login Page',
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context, newUser.user!.email);
+                                      },
                                     ),
-                                  );
-                                }
+                                  ),
+                                );
                               } on FirebaseAuthException catch (e) {
                                 print(e);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(e.message),
+                                    content: Text(e.message ?? ""),
                                   ),
                                 );
                               }

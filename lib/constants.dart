@@ -1,5 +1,4 @@
 import 'package:expense_tracker_app/transactionSummaryPage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -19,6 +18,7 @@ const List<String> months = [
 ];
 
 enum Weekdays { Mon, Tue, Wed, Thu, Fri, Sat, Sun }
+
 enum Months {
   January,
   February,
@@ -33,16 +33,25 @@ enum Months {
   November,
   December
 }
+
 enum TransactionType { Food, Travel, Shopping, Utility, Income }
+
+const addedStyle =
+    TextStyle(color: Color(0xff939393), fontSize: 12, fontFamily: 'Lato');
+const addedLeftStyle = TextStyle(
+    color: Color(
+      0xff939393,
+    ),
+    fontSize: 10);
 const double _kMyLinearProgressIndicatorHeight = 0.5;
 
 class MyLinearProgressIndicator extends LinearProgressIndicator
     implements PreferredSizeWidget {
   MyLinearProgressIndicator({
-    this.minHeight,
-    this.value,
-    this.backgroundColor,
-    this.valueColor,
+    required this.minHeight,
+    required this.value,
+    required this.backgroundColor,
+    required this.valueColor,
   });
 
   final preferredSize =
@@ -55,7 +64,7 @@ class MyLinearProgressIndicator extends LinearProgressIndicator
 }
 
 class IconListTile extends StatelessWidget {
-  IconListTile({this.name, this.icon, this.onTap});
+  IconListTile({required this.name, required this.icon, required this.onTap});
 
   final String name;
   final IconData icon;
@@ -75,7 +84,7 @@ class IconListTile extends StatelessWidget {
                 disabledColor: Colors.white,
                 color: Colors.white,
                 icon: Icon(icon),
-                onPressed: onTap,
+                onPressed: onTap(),
               ),
             ),
           ),
@@ -100,7 +109,11 @@ class IconListTile extends StatelessWidget {
 }
 
 class TransactionDetailTile extends StatefulWidget {
-  TransactionDetailTile({this.title, this.icon, this.details, this.type});
+  TransactionDetailTile(
+      {required this.title,
+      required this.icon,
+      required this.details,
+      required this.type});
   final String title;
   final Widget icon;
   final String details;
@@ -159,7 +172,12 @@ class _TransactionDetailTileState extends State<TransactionDetailTile> {
 }
 
 class TransactionCard extends StatelessWidget {
-  TransactionCard({this.type, this.title, this.time, this.value, this.tId});
+  TransactionCard(
+      {required this.type,
+      required this.title,
+      required this.time,
+      required this.value,
+      required this.tId});
   final String type;
   final String title;
   final String time;
@@ -167,7 +185,7 @@ class TransactionCard extends StatelessWidget {
   final String tId;
 
   Icon getIcon(String type) {
-    Icon icon;
+    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
       icon = Icon(
         Icons.fastfood_outlined,
@@ -240,17 +258,13 @@ class TransactionCard extends StatelessWidget {
                         style: dayText,
                       ),
                     ),
-                    time != null
-                        ? Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              time ?? '',
-                              style: weekdayText,
-                            ),
-                          )
-                        : SizedBox(
-                            height: 0,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        time,
+                        style: weekdayText,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -271,7 +285,10 @@ class TransactionCard extends StatelessWidget {
 }
 
 class TransactionInputTile extends StatelessWidget {
-  TransactionInputTile({this.title, this.inputWidget, this.actionWidget});
+  TransactionInputTile(
+      {required this.title,
+      required this.inputWidget,
+      required this.actionWidget});
   final String title;
   final Widget inputWidget;
   final Widget actionWidget;
@@ -328,7 +345,8 @@ class TransactionInputTile extends StatelessWidget {
 }
 
 class TransactionTypeTile extends StatelessWidget {
-  TransactionTypeTile({this.type, this.circleAvatar, this.onTap});
+  TransactionTypeTile(
+      {required this.type, required this.circleAvatar, required this.onTap});
 
   final TransactionType type;
   final CircleAvatar circleAvatar;
@@ -344,13 +362,13 @@ class TransactionTypeTile extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(40.0),
             ),
-            elevation: 8,
-            shadowColor: Colors.grey,
-            primary: type == TransactionType.Income
+            backgroundColor: type == TransactionType.Income
                 ? Colors.green
                 : Colors.lightBlue,
+            elevation: 8,
+            shadowColor: Colors.grey,
           ),
-          onPressed: onTap,
+          onPressed: onTap(),
           child: Row(
             children: [
               Padding(

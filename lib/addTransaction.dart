@@ -1,7 +1,6 @@
 import 'package:expense_tracker_app/transactionSummaryPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:splashscreen/splashscreen.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,18 +11,18 @@ class AddTransaction extends StatefulWidget {
   _AddTransactionState createState() => _AddTransactionState();
 }
 
-TransactionType transactionTypeSelected;
+late TransactionType transactionTypeSelected;
 
 class _AddTransactionState extends State<AddTransaction>
     with SingleTickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  User loggedInUser;
-  DocumentReference docRef;
+  late User loggedInUser;
+  late DocumentReference docRef;
 
   int progressValue = 1;
-  String transactionDetails;
-  double amountDetails;
+  late String transactionDetails;
+  late double? amountDetails;
   DateTime dateDetails = DateTime.now();
   String currencySelected = 'INR';
 
@@ -67,8 +66,8 @@ class _AddTransactionState extends State<AddTransaction>
         bottom: MyLinearProgressIndicator(
           minHeight: 1.2,
           value: progressValue / 5,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue[600]),
-          backgroundColor: Colors.grey[200],
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlue),
+          backgroundColor: Colors.grey,
         ),
         leading: IconButton(
             iconSize: 20,
@@ -359,8 +358,7 @@ class _AddTransactionState extends State<AddTransaction>
                           actionWidget: FloatingActionButton(
                             elevation: 2,
                             onPressed: () {
-                              if (transactionDetails != null &&
-                                  transactionDetails != '') {
+                              if (transactionDetails != '') {
                                 setState(() {
                                   progressValue = 3;
                                 });
@@ -441,12 +439,11 @@ class _AddTransactionState extends State<AddTransaction>
                             actionWidget: FloatingActionButton(
                               elevation: 2,
                               onPressed: () {
-                                if (amountDetails != null &&
-                                    amountDetails != 0.0) {
+                                if (amountDetails != 0.0) {
                                   setState(() {
                                     progressValue = 4;
                                     amountDetails = double.parse(
-                                        amountDetails.toStringAsFixed(2));
+                                        amountDetails!.toStringAsFixed(2));
                                   });
                                 }
                               },
@@ -509,11 +506,11 @@ class _AddTransactionState extends State<AddTransaction>
                                             fontFamily: 'Lato',
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
+                                        backgroundColor: Colors.lightBlue,
                                         elevation: 5,
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(30)),
-                                        primary: Colors.lightBlue),
+                                                BorderRadius.circular(30))),
                                     onPressed: () async {
                                       DocumentReference txnId;
                                       //Add Transaction details to Firestore
@@ -538,26 +535,16 @@ class _AddTransactionState extends State<AddTransaction>
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => SplashScreen(
-                                            useLoader: false,
-                                            seconds: 2,
+                                          builder: (context) =>
+                                              AnimatedSplashScreen(
+                                            duration: 2,
                                             backgroundColor: Colors.lightBlue,
-                                            photoSize: MediaQuery.of(context)
-                                                        .orientation ==
-                                                    Orientation.landscape
-                                                ? size.width / 8
-                                                : size.width / 2,
-                                            image: Image(
+                                            splash: Image(
                                               image: AssetImage(
                                                   'assets/images/gifts.png'),
                                             ),
-                                            title: Text(
-                                              'Congrats.. Transaction added!',
-                                              style: inputTextStyle,
-                                            ),
-                                            navigateAfterSeconds:
-                                                TransactionSummaryPage(
-                                                    txnId.id),
+                                            nextScreen: TransactionSummaryPage(
+                                                txnId.id),
                                           ),
                                         ),
                                       );

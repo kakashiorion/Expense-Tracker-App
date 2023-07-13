@@ -3,9 +3,7 @@ import 'package:expense_tracker_app/statisticsPage.dart';
 import 'package:expense_tracker_app/transactionsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:swipedetector/swipedetector.dart';
-
+import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 import 'addTransaction.dart';
 import 'budgetPage.dart';
 
@@ -16,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _auth = FirebaseAuth.instance;
-  User loggedInUser;
+  late User loggedInUser;
   var activeIndex = 0;
 
   void initState() {
@@ -86,13 +84,11 @@ class _HomePageState extends State<HomePage> {
           //   ),
           // ),
           body: SwipeDetector(
-            onSwipeRight: () {
-              setState(() {
-                activeIndex -= 1;
-                if (activeIndex == -1) activeIndex = 3;
-              });
-            },
-            onSwipeLeft: () {
+            onSwipeRight: (Offset offset) => setState(() {
+              activeIndex -= 1;
+              if (activeIndex == -1) activeIndex = 3;
+            }),
+            onSwipeLeft: (Offset offset) {
               setState(() {
                 activeIndex += 1;
                 if (activeIndex == 4) activeIndex = 0;
@@ -157,16 +153,12 @@ class _HomePageState extends State<HomePage> {
     switch (activeIndex) {
       case 0:
         return 'Transactions';
-        break;
       case 1:
         return 'Your Budgets';
-        break;
       case 2:
         return 'Statistics';
-        break;
       case 3:
         return 'Profile';
-        break;
       default:
         return 'Transactions';
     }

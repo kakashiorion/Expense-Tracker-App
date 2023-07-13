@@ -11,17 +11,17 @@ var firstCamera = true;
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera1;
 
-  const TakePictureScreen({Key key, @required this.camera1}) : super(key: key);
+  const TakePictureScreen({Key? key, required this.camera1}) : super(key: key);
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
-  CameraController _controller1;
+  late CameraController _controller1;
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<void> _initializeControllerFuture;
+  late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
@@ -79,7 +79,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             final image = await _controller1.takePicture();
             File uploadImage = File(image.path);
 
-            TaskSnapshot snapshot = await _storage.ref().child("profileImages/${FirebaseAuth.instance.currentUser.email}").putFile(uploadImage);
+            TaskSnapshot snapshot = await _storage
+                .ref()
+                .child(
+                    "profileImages/${FirebaseAuth.instance.currentUser!.email}")
+                .putFile(uploadImage);
             if (snapshot.state == TaskState.success) {
               final String downloadUrl = await snapshot.ref.getDownloadURL();
               Navigator.pop(context, downloadUrl);

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:expense_tracker_app/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TransactionSummaryPage extends StatefulWidget {
@@ -10,27 +9,25 @@ class TransactionSummaryPage extends StatefulWidget {
   final transactionId;
 
   @override
-  _TransactionSummaryPageState createState() =>
+  State<TransactionSummaryPage> createState() =>
       _TransactionSummaryPageState(transactionId);
 }
 
 class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
   _TransactionSummaryPageState(this.transactionId);
   final String transactionId;
-  DocumentReference docRef;
-  User user;
+  late DocumentReference docRef;
+  late User user;
 
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      docRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.email)
-          .collection('Transactions')
-          .doc(transactionId);
-    }
+    user = FirebaseAuth.instance.currentUser!;
+    docRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.email)
+        .collection('Transactions')
+        .doc(transactionId);
     setTransactionValues();
   }
 
@@ -38,7 +35,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
   bool editing = false;
   String type = '';
   String details = '';
-  double amount = 0.0;
+  double? amount = 0.0;
   String currency = 'INR';
   int day = DateTime.now().day;
   int month = DateTime.now().month;
@@ -104,6 +101,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Edit type of transaction',
+                                actionWidget: SizedBox(),
                                 inputWidget: DropdownButton<String>(
                                   value: type,
                                   icon: const Icon(
@@ -111,9 +109,9 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                   iconSize: 16,
                                   elevation: 2,
                                   style: inputTextStyle,
-                                  onChanged: (String newValue) {
+                                  onChanged: (String? newValue) {
                                     setState(() {
-                                      type = newValue;
+                                      type = newValue!;
                                     });
                                   },
                                   items: <String>[
@@ -147,6 +145,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change transaction details',
+                                actionWidget: SizedBox(),
                                 inputWidget: TextField(
                                     onChanged: (detailsText) {
                                       setState(() {
@@ -180,6 +179,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change amount',
+                                actionWidget: SizedBox(),
                                 inputWidget: Row(
                                   children: [
                                     Expanded(
@@ -244,7 +244,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                 icon:
                                     Icon(Icons.account_balance_wallet_outlined),
                                 details:
-                                    currency + ' ' + amount.toStringAsFixed(2),
+                                    currency + ' ' + amount!.toStringAsFixed(2),
                                 type: type,
                               ),
                       ),
@@ -257,6 +257,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                         child: editing
                             ? TransactionInputTile(
                                 title: 'Change date of transaction',
+                                actionWidget: SizedBox(),
                                 inputWidget: Padding(
                                   padding: const EdgeInsets.only(left: 20.0),
                                   child: Row(
@@ -428,7 +429,7 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
 
   Icon getIcon(String type) {
     var iconColor = Colors.white;
-    Icon icon;
+    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
       icon = Icon(
         Icons.fastfood_outlined,

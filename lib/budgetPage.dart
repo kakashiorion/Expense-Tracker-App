@@ -1,25 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
 import 'createBudget.dart';
 
 class BudgetPage extends StatefulWidget {
-  const BudgetPage({Key key}) : super(key: key);
+  const BudgetPage({Key? key}) : super(key: key);
 
   @override
   _BudgetPageState createState() => _BudgetPageState();
 }
 
-int monthSelected;
-int yearSelected;
+late int monthSelected;
+late int yearSelected;
 
 class _BudgetPageState extends State<BudgetPage> {
   final _auth = FirebaseAuth.instance;
   dynamic loggedInUser;
-  DocumentReference docRef;
+  late DocumentReference docRef;
 
   void getCurrentUser() async {
     try {
@@ -42,8 +41,6 @@ class _BudgetPageState extends State<BudgetPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Column(
       children: [
         Container(
@@ -55,7 +52,7 @@ class _BudgetPageState extends State<BudgetPage> {
                   offset: Offset(0.5, 0.5),
                   blurRadius: 0.5,
                   spreadRadius: 0.5,
-                  color: Colors.grey[200])
+                  color: Colors.grey)
             ],
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
@@ -134,7 +131,7 @@ class _BudgetPageState extends State<BudgetPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.active ||
               !snapshot.hasData ||
-              snapshot.data.docs?.length == 0) {
+              snapshot.data!.docs.length == 0) {
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,14 +154,14 @@ class _BudgetPageState extends State<BudgetPage> {
             return Container(
               child: ListView.builder(
                   padding: EdgeInsets.all(5),
-                  itemCount: snapshot.data.docs.length,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    final type = snapshot.data.docs[index]['Type'];
-                    final currency = snapshot.data.docs[index]['Currency'];
-                    final limit = snapshot.data.docs[index]['Limit'];
-                    final title = snapshot.data.docs[index]['Title'];
-                    final id = snapshot.data.docs[index].id;
-                    final time = snapshot.data.docs[index]['Time'];
+                    final type = snapshot.data!.docs[index]['Type'];
+                    final currency = snapshot.data!.docs[index]['Currency'];
+                    final limit = snapshot.data!.docs[index]['Limit'];
+                    final title = snapshot.data!.docs[index]['Title'];
+                    final id = snapshot.data!.docs[index].id;
+                    final time = snapshot.data!.docs[index]['Time'];
                     Widget totalValueWidget =
                         txnValue(month, year, type, currency, limit.toDouble());
                     return Dismissible(
@@ -204,7 +201,7 @@ class _BudgetPageState extends State<BudgetPage> {
                       onDismissed: (dismissDirection) {
                         docRef.collection('Budgets').doc(id).delete();
                         setState(() {
-                          snapshot.data.docs.removeAt(index);
+                          snapshot.data!.docs.removeAt(index);
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -250,7 +247,7 @@ class _BudgetPageState extends State<BudgetPage> {
             .where('Currency', isEqualTo: currency)
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -277,7 +274,7 @@ class _BudgetPageState extends State<BudgetPage> {
             );
           } else {
             double value = 0.0;
-            snapshot.data.docs.forEach((element) {
+            snapshot.data!.docs.forEach((element) {
               value += element['Amount'];
               //print('$elementValue  ${element['Details']}');
             });
@@ -368,7 +365,8 @@ class _BudgetPageState extends State<BudgetPage> {
 }
 
 class MonthYearListTile extends StatelessWidget {
-  MonthYearListTile({this.month, this.year, this.onTap});
+  MonthYearListTile(
+      {required this.month, required this.year, required this.onTap});
 
   final int month;
   final int year;
@@ -384,7 +382,7 @@ class MonthYearListTile extends StatelessWidget {
           style: (monthSelected == month && yearSelected == year)
               ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
               : null,
-          onPressed: onTap,
+          onPressed: onTap(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -413,7 +411,10 @@ class MonthYearListTile extends StatelessWidget {
 
 class BudgetTile extends StatelessWidget {
   BudgetTile(
-      {this.budgetTitle, this.budgetValue, this.budgetCategory, this.currency});
+      {required this.budgetTitle,
+      required this.budgetValue,
+      required this.budgetCategory,
+      required this.currency});
 
   final String budgetTitle;
   final Widget budgetValue;
@@ -421,7 +422,7 @@ class BudgetTile extends StatelessWidget {
   final String currency;
 
   Icon getIcon(String type) {
-    Icon icon;
+    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
       icon = Icon(Icons.fastfood_outlined);
     } else if (type == TransactionType.Shopping.toString().substring(16)) {

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -10,19 +9,19 @@ import 'package:fl_chart/fl_chart.dart';
 import 'constants.dart';
 
 class StatisticsPage extends StatefulWidget {
-  const StatisticsPage({Key key}) : super(key: key);
+  const StatisticsPage({Key? key}) : super(key: key);
 
   @override
   _StatisticsPageState createState() => _StatisticsPageState();
 }
 
-int monthSelected;
-int yearSelected;
+late int monthSelected;
+late int yearSelected;
 
 class _StatisticsPageState extends State<StatisticsPage> {
   final _auth = FirebaseAuth.instance;
   dynamic loggedInUser;
-  DocumentReference docRef;
+  late DocumentReference docRef;
   bool monthlyStatsSelected = false;
 
   int touchIndex = -1;
@@ -32,10 +31,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
   final Color shoppingColor = Color(0xfff25f5c);
   final Color utilityColor = Color(0xffffe066);
 
-  double food0, food1, food2, food3, food4, food5, food6;
-  double travel0, travel1, travel2, travel3, travel4, travel5, travel6;
-  double utility0, utility1, utility2, utility3, utility4, utility5, utility6;
-  double shopping0,
+  double? food0, food1, food2, food3, food4, food5, food6;
+  double? travel0, travel1, travel2, travel3, travel4, travel5, travel6;
+  double? utility0, utility1, utility2, utility3, utility4, utility5, utility6;
+  double? shopping0,
       shopping1,
       shopping2,
       shopping3,
@@ -151,7 +150,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           offset: Offset(0.5, 0.5),
                           blurRadius: 0.5,
                           spreadRadius: 0.5,
-                          color: Colors.grey[200])
+                          color: Colors.grey)
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
@@ -200,23 +199,22 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                                 sections:
                                                     getThisWeekPieSectionData(),
                                                 pieTouchData: PieTouchData(
-                                                    touchCallback:
-                                                        (pieTouchResponse) {
+                                                    touchCallback: (event,
+                                                        pieTouchResponse) {
                                                   setState(() {
                                                     final desiredTouch =
                                                         pieTouchResponse
-                                                                    .touchInput
                                                                 is! PointerExitEvent &&
                                                             pieTouchResponse
-                                                                    .touchInput
                                                                 is! PointerUpEvent;
                                                     if (desiredTouch &&
                                                         pieTouchResponse
-                                                                .touchedSection !=
+                                                                ?.touchedSection !=
                                                             null) {
-                                                      touchIndex = pieTouchResponse
-                                                          .touchedSection
-                                                          .touchedSectionIndex;
+                                                      touchIndex =
+                                                          pieTouchResponse!
+                                                              .touchedSection!
+                                                              .touchedSectionIndex;
                                                     } else {
                                                       touchIndex = -1;
                                                     }
@@ -357,90 +355,77 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                           ),
                                           titlesData: FlTitlesData(
                                             show: true,
-                                            bottomTitles: SideTitles(
+                                            bottomTitles: AxisTitles(
+                                                sideTitles: SideTitles(
                                               showTitles: true,
-                                              getTextStyles: (value) =>
-                                                  const TextStyle(
-                                                      color: Color(0xff939393),
-                                                      fontSize: 12,
-                                                      fontFamily: 'Lato'),
-                                              margin: 5,
-                                              getTitles: (double value) {
+                                              interval: 5,
+                                              getTitlesWidget:
+                                                  (double value, addedStyles) {
                                                 switch (value.toInt()) {
                                                   case 0:
-                                                    return days[
-                                                        date0.weekday - 1];
+                                                    return Text(days[
+                                                        date0.weekday - 1]);
                                                   case 1:
-                                                    return days[
-                                                        date1.weekday - 1];
+                                                    return Text(days[
+                                                        date1.weekday - 1]);
                                                   case 2:
-                                                    return days[
-                                                        date2.weekday - 1];
+                                                    return Text(days[
+                                                        date2.weekday - 1]);
                                                   case 3:
-                                                    return days[
-                                                        date3.weekday - 1];
+                                                    return Text(days[
+                                                        date3.weekday - 1]);
                                                   case 4:
-                                                    return days[
-                                                        date4.weekday - 1];
+                                                    return Text(days[
+                                                        date4.weekday - 1]);
                                                   case 5:
-                                                    return days[
-                                                        date5.weekday - 1];
+                                                    return Text(days[
+                                                        date5.weekday - 1]);
                                                   case 6:
-                                                    return 'Today';
+                                                    return Text('Today');
                                                   default:
-                                                    return '';
+                                                    return Text('');
                                                 }
                                               },
+                                            )),
+                                            leftTitles: AxisTitles(
+                                              sideTitles: SideTitles(
+                                                  showTitles: true,
+                                                  reservedSize: 0,
+                                                  interval: [
+                                                        food0,
+                                                        food1,
+                                                        food2,
+                                                        food3,
+                                                        food4,
+                                                        food5,
+                                                        food6,
+                                                        travel0,
+                                                        travel1,
+                                                        travel2,
+                                                        travel3,
+                                                        travel4,
+                                                        travel5,
+                                                        travel6,
+                                                        utility0,
+                                                        utility1,
+                                                        utility2,
+                                                        utility3,
+                                                        utility4,
+                                                        utility5,
+                                                        utility6,
+                                                        shopping0,
+                                                        shopping1,
+                                                        shopping2,
+                                                        shopping3,
+                                                        shopping4,
+                                                        shopping5,
+                                                        shopping6,
+                                                        2
+                                                      ].reduce((a, b) =>
+                                                          max(a!, b!))! /
+                                                      2.ceilToDouble()),
                                             ),
-                                            leftTitles: SideTitles(
-                                                    showTitles: true,
-                                                    getTextStyles: (value) =>
-                                                        const TextStyle(
-                                                            color: Color(
-                                                              0xff939393,
-                                                            ),
-                                                            fontSize: 10),
-                                                    margin: 0,
-                                                    interval: [
-                                                          food0,
-                                                          food1,
-                                                          food2,
-                                                          food3,
-                                                          food4,
-                                                          food5,
-                                                          food6,
-                                                          travel0,
-                                                          travel1,
-                                                          travel2,
-                                                          travel3,
-                                                          travel4,
-                                                          travel5,
-                                                          travel6,
-                                                          utility0,
-                                                          utility1,
-                                                          utility2,
-                                                          utility3,
-                                                          utility4,
-                                                          utility5,
-                                                          utility6,
-                                                          shopping0,
-                                                          shopping1,
-                                                          shopping2,
-                                                          shopping3,
-                                                          shopping4,
-                                                          shopping5,
-                                                          shopping6,
-                                                          2
-                                                        ].reduce(max) /
-                                                        2.ceilToDouble()) ??
-                                                null,
                                           ),
-                                          borderData: FlBorderData(
-                                            show: false,
-                                          ),
-                                          groupsSpace: 35,
-                                          barGroups:
-                                              getThisWeekStackedBarData(),
                                         ),
                                       ),
                                     ),
@@ -486,7 +471,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           offset: Offset(0.5, 0.5),
                           blurRadius: 0.5,
                           spreadRadius: 0.5,
-                          color: Colors.grey[200])
+                          color: Colors.grey)
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
@@ -503,7 +488,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           offset: Offset(0.5, 0.5),
                           blurRadius: 0.5,
                           spreadRadius: 0.5,
-                          color: Colors.grey[200])
+                          color: Colors.grey)
                     ],
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
@@ -554,23 +539,21 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                                   sections:
                                                       getMonthlyPieSectionData(),
                                                   pieTouchData: PieTouchData(
-                                                      touchCallback:
-                                                          (pieTouchResponse) {
+                                                      touchCallback: (event,
+                                                          pieTouchResponse) {
                                                     setState(() {
                                                       final desiredTouch =
                                                           pieTouchResponse
-                                                                      .touchInput
                                                                   is! PointerExitEvent &&
                                                               pieTouchResponse
-                                                                      .touchInput
                                                                   is! PointerUpEvent;
                                                       if (desiredTouch &&
-                                                          pieTouchResponse
+                                                          pieTouchResponse!
                                                                   .touchedSection !=
                                                               null) {
                                                         touchIndex =
                                                             pieTouchResponse
-                                                                .touchedSection
+                                                                .touchedSection!
                                                                 .touchedSectionIndex;
                                                       } else {
                                                         touchIndex = -1;
@@ -732,55 +715,48 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                                 ),
                                                 titlesData: FlTitlesData(
                                                   show: true,
-                                                  bottomTitles: SideTitles(
-                                                    showTitles: true,
-                                                    getTextStyles: (value) =>
-                                                        const TextStyle(
-                                                            color: Color(
-                                                                0xff939393),
-                                                            fontSize: 12,
-                                                            fontFamily: 'Lato'),
-                                                    margin: 5,
-                                                    getTitles: (double value) {
-                                                      switch (value.toInt()) {
-                                                        case 0:
-                                                          return 'Food';
-                                                        case 1:
-                                                          return 'Travel';
-                                                        case 2:
-                                                          return 'Utility';
-                                                        case 3:
-                                                          return 'Shopping';
-                                                        default:
-                                                          return '';
-                                                      }
-                                                    },
+                                                  bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                      showTitles: true,
+                                                      interval: 5,
+                                                      getTitlesWidget:
+                                                          (double value,
+                                                              addedStyle) {
+                                                        switch (value.toInt()) {
+                                                          case 0:
+                                                            return Text('Food');
+                                                          case 1:
+                                                            return Text(
+                                                                'Travel');
+                                                          case 2:
+                                                            return Text(
+                                                                'Utility');
+                                                          case 3:
+                                                            return Text(
+                                                                'Shopping');
+                                                          default:
+                                                            return Text('');
+                                                        }
+                                                      },
+                                                    ),
                                                   ),
-                                                  leftTitles: SideTitles(
-                                                          showTitles: true,
-                                                          getTextStyles:
-                                                              (value) =>
-                                                                  const TextStyle(
-                                                                      color:
-                                                                          Color(
-                                                                        0xff939393,
-                                                                      ),
-                                                                      fontSize:
-                                                                          10),
-                                                          margin: 12,
-                                                          interval: [
-                                                                foodMonthTotal,
-                                                                travelMonthTotal,
-                                                                utilityMonthTotal,
-                                                                shoppingMonthTotal,
-                                                                travelBudget,
-                                                                foodBudget,
-                                                                shoppingBudget,
-                                                                utilityBudget,
-                                                                2
-                                                              ].reduce(max) /
-                                                              2.ceilToDouble()) ??
-                                                      null,
+                                                  leftTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        reservedSize: 12,
+                                                        interval: [
+                                                              foodMonthTotal,
+                                                              travelMonthTotal,
+                                                              utilityMonthTotal,
+                                                              shoppingMonthTotal,
+                                                              travelBudget,
+                                                              foodBudget,
+                                                              shoppingBudget,
+                                                              utilityBudget,
+                                                              2
+                                                            ].reduce(max) /
+                                                            2.ceilToDouble()),
+                                                  ),
                                                 ),
                                                 borderData: FlBorderData(
                                                   show: false,
@@ -912,13 +888,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element['Month'] == date0.month &&
               element['Year'] == date0.year) {
             if (element['Type'] == 'Food') {
-              food0 += element['Amount'];
+              food0 = food0! + element['Amount'];
             } else if (element['Type'] == 'Travel') {
-              travel0 += element['Amount'];
+              travel0 = travel0! + element['Amount'];
             } else if (element['Type'] == 'Shopping') {
-              shopping0 += element['Amount'];
+              shopping0 = shopping0! + element['Amount'];
             } else if (element['Type'] == 'Utility') {
-              utility0 += element['Amount'];
+              utility0 = utility0! + element['Amount'];
             }
           }
           //Set date1 values
@@ -926,13 +902,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date1.month &&
               element.get('Year') == date1.year) {
             if (element.get('Type') == 'Food') {
-              food1 += element.get('Amount');
+              food1 = food1! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel1 += element.get('Amount');
+              travel1 = travel1! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping1 += element.get('Amount');
+              shopping1 = shopping1! + element.get('Amount');
             } else if (element.get('Type') == 'Utility') {
-              utility1 += element.get('Amount');
+              utility1 = utility1! + element.get('Amount');
             }
           }
           //Set date2 values
@@ -940,13 +916,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date2.month &&
               element.get('Year') == date2.year) {
             if (element.get('Type') == 'Food') {
-              food2 += element.get('Amount');
+              food2 = food2! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel2 += element.get('Amount');
+              travel2 = travel2! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping2 += element.get('Amount');
+              shopping2 = shopping2! + element['Amount'];
             } else if (element.get('Type') == 'Utility') {
-              utility2 += element.get('Amount');
+              utility2 = utility2! + element.get('Amount');
             }
           }
           //Set date3 values
@@ -954,13 +930,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date3.month &&
               element.get('Year') == date3.year) {
             if (element.get('Type') == 'Food') {
-              food3 += element.get('Amount');
+              food3 = food3! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel3 += element.get('Amount');
+              travel3 = travel3! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping3 += element.get('Amount');
+              shopping3 = shopping3! + element['Amount'];
             } else if (element.get('Type') == 'Utility') {
-              utility3 += element.get('Amount');
+              utility3 = utility3! + element.get('Amount');
             }
           }
           //Set date4 values
@@ -968,13 +944,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date4.month &&
               element.get('Year') == date4.year) {
             if (element.get('Type') == 'Food') {
-              food4 += element.get('Amount');
+              food4 = food4! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel4 += element.get('Amount');
+              travel4 = travel4! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping4 += element.get('Amount');
+              shopping4 = shopping4! + element['Amount'];
             } else if (element.get('Type') == 'Utility') {
-              utility4 += element.get('Amount');
+              utility4 = utility4! + element.get('Amount');
             }
           }
           //Set date5 values
@@ -982,13 +958,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date5.month &&
               element.get('Year') == date5.year) {
             if (element.get('Type') == 'Food') {
-              food5 += element.get('Amount');
+              food5 = food5! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel5 += element.get('Amount');
+              travel5 = travel5! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping5 += element.get('Amount');
+              shopping5 = shopping5! + element['Amount'];
             } else if (element.get('Type') == 'Utility') {
-              utility5 += element.get('Amount');
+              utility5 = utility5! + element.get('Amount');
             }
           }
           //Set date6 values
@@ -996,36 +972,42 @@ class _StatisticsPageState extends State<StatisticsPage> {
               element.get('Month') == date6.month &&
               element.get('Year') == date6.year) {
             if (element.get('Type') == 'Food') {
-              food6 += element.get('Amount');
+              food6 = food6! + element.get('Amount');
             } else if (element.get('Type') == 'Travel') {
-              travel6 += element.get('Amount');
+              travel6 = travel6! + element.get('Amount');
             } else if (element.get('Type') == 'Shopping') {
-              shopping6 += element.get('Amount');
+              shopping6 = shopping6! + element.get('Amount');
             } else if (element.get('Type') == 'Utility') {
-              utility6 += element.get('Amount');
+              utility6 = utility6! + element.get('Amount');
             }
           }
         } on Exception catch (e) {
           print(e);
         }
       });
-      foodThisWeekTotal = food0 + food1 + food2 + food3 + food4 + food5 + food6;
-      travelThisWeekTotal =
-          travel0 + travel1 + travel2 + travel3 + travel4 + travel5 + travel6;
-      shoppingThisWeekTotal = shopping0 +
-          shopping1 +
-          shopping2 +
-          shopping3 +
-          shopping4 +
-          shopping5 +
-          shopping6;
-      utilityThisWeekTotal = utility0 +
-          utility1 +
-          utility2 +
-          utility3 +
-          utility4 +
-          utility5 +
-          utility6;
+      foodThisWeekTotal =
+          food0! + food1! + food2! + food3! + food4! + food5! + food6!;
+      travelThisWeekTotal = travel0! +
+          travel1! +
+          travel2! +
+          travel3! +
+          travel4! +
+          travel5! +
+          travel6!;
+      shoppingThisWeekTotal = shopping0! +
+          shopping1! +
+          shopping2! +
+          shopping3! +
+          shopping4! +
+          shopping5! +
+          shopping6!;
+      utilityThisWeekTotal = utility0! +
+          utility1! +
+          utility2! +
+          utility3! +
+          utility4! +
+          utility5! +
+          utility6!;
       thisWeekTotal = foodThisWeekTotal +
           travelThisWeekTotal +
           utilityThisWeekTotal +
@@ -1041,14 +1023,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food0 + travel0 + utility0 + shopping0,
+              toY: food0! + travel0! + utility0! + shopping0!,
               rodStackItems: [
-                BarChartRodStackItem(0, food0, foodColor),
-                BarChartRodStackItem(food0, food0 + travel0, travelColor),
-                BarChartRodStackItem(
-                    food0 + travel0, food0 + travel0 + utility0, utilityColor),
-                BarChartRodStackItem(food0 + travel0 + utility0,
-                    food0 + travel0 + utility0 + shopping0, shoppingColor),
+                BarChartRodStackItem(0, food0!, foodColor),
+                BarChartRodStackItem(food0!, food0! + travel0!, travelColor),
+                BarChartRodStackItem(food0! + travel0!,
+                    food0! + travel0! + utility0!, utilityColor),
+                BarChartRodStackItem(food0! + travel0! + utility0!,
+                    food0! + travel0! + utility0! + shopping0!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1058,14 +1040,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food1 + travel1 + utility1 + shopping1,
+              toY: food1! + travel1! + utility1! + shopping1!,
               rodStackItems: [
-                BarChartRodStackItem(0, food1, foodColor),
-                BarChartRodStackItem(food1, food1 + travel1, travelColor),
-                BarChartRodStackItem(
-                    food1 + travel1, food1 + travel1 + utility1, utilityColor),
-                BarChartRodStackItem(food1 + travel1 + utility1,
-                    food1 + travel1 + utility1 + shopping1, shoppingColor),
+                BarChartRodStackItem(0, food1!, foodColor),
+                BarChartRodStackItem(food1!, food1! + travel1!, travelColor),
+                BarChartRodStackItem(food1! + travel1!,
+                    food1! + travel1! + utility1!, utilityColor),
+                BarChartRodStackItem(food1! + travel1! + utility1!,
+                    food1! + travel1! + utility1! + shopping1!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1075,14 +1057,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food2 + travel2 + utility2 + shopping2,
+              toY: food2! + travel2! + utility2! + shopping2!,
               rodStackItems: [
-                BarChartRodStackItem(0, food2, foodColor),
-                BarChartRodStackItem(food2, food2 + travel2, travelColor),
-                BarChartRodStackItem(
-                    food2 + travel2, food2 + travel2 + utility2, utilityColor),
-                BarChartRodStackItem(food2 + travel2 + utility2,
-                    food2 + travel2 + utility2 + shopping2, shoppingColor),
+                BarChartRodStackItem(0, food2!, foodColor),
+                BarChartRodStackItem(food2!, food2! + travel2!, travelColor),
+                BarChartRodStackItem(food2! + travel2!,
+                    food2! + travel2! + utility2!, utilityColor),
+                BarChartRodStackItem(food2! + travel2! + utility2!,
+                    food2! + travel2! + utility2! + shopping2!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1092,14 +1074,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food3 + travel3 + utility3 + shopping3,
+              toY: food3! + travel3! + utility3! + shopping3!,
               rodStackItems: [
-                BarChartRodStackItem(0, food3, foodColor),
-                BarChartRodStackItem(food3, food3 + travel3, travelColor),
-                BarChartRodStackItem(
-                    food3 + travel3, food3 + travel3 + utility3, utilityColor),
-                BarChartRodStackItem(food3 + travel3 + utility3,
-                    food3 + travel3 + utility3 + shopping3, shoppingColor),
+                BarChartRodStackItem(0, food3!, foodColor),
+                BarChartRodStackItem(food3!, food3! + travel3!, travelColor),
+                BarChartRodStackItem(food3! + travel3!,
+                    food3! + travel3! + utility3!, utilityColor),
+                BarChartRodStackItem(food3! + travel3! + utility3!,
+                    food3! + travel3! + utility3! + shopping3!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1109,14 +1091,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food4 + travel4 + utility4 + shopping4,
+              toY: food4! + travel4! + utility4! + shopping4!,
               rodStackItems: [
-                BarChartRodStackItem(0, food4, foodColor),
-                BarChartRodStackItem(food4, food4 + travel4, travelColor),
-                BarChartRodStackItem(
-                    food4 + travel4, food4 + travel4 + utility4, utilityColor),
-                BarChartRodStackItem(food4 + travel4 + utility4,
-                    food4 + travel4 + utility4 + shopping4, shoppingColor),
+                BarChartRodStackItem(0, food4!, foodColor),
+                BarChartRodStackItem(food4!, food4! + travel4!, travelColor),
+                BarChartRodStackItem(food4! + travel4!,
+                    food4! + travel4! + utility4!, utilityColor),
+                BarChartRodStackItem(food4! + travel4! + utility4!,
+                    food4! + travel4! + utility4! + shopping4!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1126,14 +1108,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food5 + travel5 + utility5 + shopping5,
+              toY: food5! + travel5! + utility5! + shopping5!,
               rodStackItems: [
-                BarChartRodStackItem(0, food5, foodColor),
-                BarChartRodStackItem(food5, food5 + travel5, travelColor),
-                BarChartRodStackItem(
-                    food5 + travel5, food5 + travel5 + utility5, utilityColor),
-                BarChartRodStackItem(food5 + travel5 + utility5,
-                    food5 + travel5 + utility5 + shopping5, shoppingColor),
+                BarChartRodStackItem(0, food5!, foodColor),
+                BarChartRodStackItem(food5!, food5! + travel5!, travelColor),
+                BarChartRodStackItem(food5! + travel5!,
+                    food5! + travel5! + utility5!, utilityColor),
+                BarChartRodStackItem(food5! + travel5! + utility5!,
+                    food5! + travel5! + utility5! + shopping5!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1143,14 +1125,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barsSpace: 10,
         barRods: [
           BarChartRodData(
-              y: food6 + travel6 + utility6 + shopping6,
+              toY: food6! + travel6! + utility6! + shopping6!,
               rodStackItems: [
-                BarChartRodStackItem(0, food6, foodColor),
-                BarChartRodStackItem(food6, food6 + travel6, travelColor),
-                BarChartRodStackItem(
-                    food6 + travel6, food6 + travel6 + utility6, utilityColor),
-                BarChartRodStackItem(food6 + travel6 + utility6,
-                    food6 + travel6 + utility6 + shopping6, shoppingColor),
+                BarChartRodStackItem(0, food6!, foodColor),
+                BarChartRodStackItem(food6!, food6! + travel6!, travelColor),
+                BarChartRodStackItem(food6! + travel6!,
+                    food6! + travel6! + utility6!, utilityColor),
+                BarChartRodStackItem(food6! + travel6! + utility6!,
+                    food6! + travel6! + utility6! + shopping6!, shoppingColor),
               ],
               borderRadius: borderRadius),
         ],
@@ -1307,14 +1289,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barRods: [
           BarChartRodData(
               width: 15,
-              y: foodMonthTotal,
-              colors: [foodColor],
+              toY: foodMonthTotal,
+              color: foodColor,
               borderRadius: borderRadius),
           //Food budget data
           BarChartRodData(
               width: 15,
-              y: foodBudget,
-              colors: [Colors.white],
+              toY: foodBudget,
+              color: Colors.white,
               borderRadius: borderRadius),
         ],
       ),
@@ -1324,14 +1306,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barRods: [
           BarChartRodData(
               width: 15,
-              y: travelMonthTotal,
-              colors: [travelColor],
+              toY: travelMonthTotal,
+              color: travelColor,
               borderRadius: borderRadius),
           //Travel budget data
           BarChartRodData(
               width: 15,
-              y: travelBudget,
-              colors: [Colors.white],
+              toY: travelBudget,
+              color: Colors.white,
               borderRadius: borderRadius),
         ],
       ),
@@ -1341,14 +1323,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barRods: [
           BarChartRodData(
               width: 15,
-              y: utilityMonthTotal,
-              colors: [utilityColor],
+              toY: utilityMonthTotal,
+              color: utilityColor,
               borderRadius: borderRadius),
           //Utility budget data
           BarChartRodData(
               width: 15,
-              y: utilityBudget,
-              colors: [Colors.white],
+              toY: utilityBudget,
+              color: Colors.white,
               borderRadius: borderRadius),
         ],
       ),
@@ -1358,14 +1340,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
         barRods: [
           BarChartRodData(
               width: 15,
-              y: shoppingMonthTotal,
-              colors: [shoppingColor],
+              toY: shoppingMonthTotal,
+              color: shoppingColor,
               borderRadius: borderRadius),
           //Shopping budget data
           BarChartRodData(
               width: 15,
-              y: shoppingBudget,
-              colors: [Colors.white],
+              toY: shoppingBudget,
+              color: Colors.white,
               borderRadius: borderRadius),
         ],
       ),
@@ -1374,7 +1356,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
 }
 
 class MonthYearListTile extends StatelessWidget {
-  MonthYearListTile({this.month, this.year, this.onTap});
+  MonthYearListTile(
+      {required this.month, required this.year, required this.onTap});
 
   final int month;
   final int year;
@@ -1392,7 +1375,7 @@ class MonthYearListTile extends StatelessWidget {
               style: (monthSelected == month && yearSelected == year)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap,
+              onPressed: onTap(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

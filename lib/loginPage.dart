@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
-  User user;
+  late User? user;
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
@@ -25,11 +25,11 @@ class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
   checkUserLoggedIn() async {
-    User user = await FirebaseAuth.instance.currentUser;
-    if (user != null)
-      return true;
-    else
+    User? user = await FirebaseAuth.instance.currentUser;
+    if (user == false)
       return false;
+    else
+      return true;
   }
 
   @override
@@ -201,28 +201,26 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               onPressed: () async {
                                 try {
-                                  final loginUser =
-                                      await _auth.signInWithEmailAndPassword(
-                                          email: email, password: password);
-                                  if (loginUser != null) {
-                                    FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc(email)
-                                        .set({
-                                      'Email': email,
-                                      'Password': password
-                                    }, SetOptions(merge: true));
+                                  // final loginUser =
+                                  //     await _auth.signInWithEmailAndPassword(
+                                  //         email: email, password: password);
+                                  FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(email)
+                                      .set({
+                                    'Email': email,
+                                    'Password': password
+                                  }, SetOptions(merge: true));
 
-                                    await Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return HomePage();
-                                    }));
-                                  }
+                                  await Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return HomePage();
+                                  }));
                                 } on FirebaseAuthException catch (e) {
                                   print(e);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(e.message),
+                                      content: Text(e.message ?? ""),
                                     ),
                                   );
                                 }
@@ -262,53 +260,51 @@ class _LoginPageState extends State<LoginPage> {
                                   final UserCredential userCredential =
                                       await _auth.signInWithPopup(authProvider);
 
-                                  user = userCredential.user;
+                                  user = userCredential.user!;
                                 } catch (e) {
                                   print(e);
                                 }
                               } else {
-                                GoogleSignInAccount googleSignInAccount =
+                                GoogleSignInAccount? googleSignInAccount =
                                     await _googleSignIn.signIn();
 
-                                if (googleSignInAccount != null) {
-                                  final GoogleSignInAuthentication
-                                      googleSignInAuthentication =
-                                      await googleSignInAccount.authentication;
+                                final GoogleSignInAuthentication?
+                                    googleSignInAuthentication =
+                                    await googleSignInAccount!.authentication;
 
-                                  final AuthCredential credential =
-                                      GoogleAuthProvider.credential(
-                                    accessToken:
-                                        googleSignInAuthentication.accessToken,
-                                    idToken: googleSignInAuthentication.idToken,
-                                  );
+                                final AuthCredential credential =
+                                    GoogleAuthProvider.credential(
+                                  accessToken:
+                                      googleSignInAuthentication!.accessToken,
+                                  idToken: googleSignInAuthentication.idToken,
+                                );
 
-                                  try {
-                                    final UserCredential userCredential =
-                                        await _auth
-                                            .signInWithCredential(credential);
+                                try {
+                                  final UserCredential userCredential =
+                                      await _auth
+                                          .signInWithCredential(credential);
 
-                                    user = userCredential.user;
-                                    DocumentReference docRef = FirebaseFirestore
-                                        .instance
-                                        .collection('users')
-                                        .doc(user.email);
-                                    docRef.get().then((docSnapshot) => {
-                                          if (!docSnapshot.exists)
-                                            {
-                                              docRef.set({
-                                                'Email': user.email,
-                                                'Photo Location': user.photoURL,
-                                                'Name': 'Jack Philly',
-                                                'Date Of Birth': '01-01-2000'
-                                              }, SetOptions(merge: true))
-                                            }
-                                        });
-                                  } catch (e) {
-                                    print(e);
-                                  }
+                                  user = userCredential.user;
+                                  DocumentReference docRef = FirebaseFirestore
+                                      .instance
+                                      .collection('users')
+                                      .doc(user!.email);
+                                  docRef.get().then((docSnapshot) => {
+                                        if (!docSnapshot.exists)
+                                          {
+                                            docRef.set({
+                                              'Email': user!.email,
+                                              'Photo Location': user!.photoURL,
+                                              'Name': 'Jack Philly',
+                                              'Date Of Birth': '01-01-2000'
+                                            }, SetOptions(merge: true))
+                                          }
+                                      });
+                                } catch (e) {
+                                  print(e);
                                 }
                               }
-                              return user;
+                              return;
                             },
                             style: ButtonStyle(
                               side: MaterialStateProperty.all(

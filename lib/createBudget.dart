@@ -5,22 +5,22 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class CreateBudget extends StatefulWidget {
-  const CreateBudget({Key key}) : super(key: key);
+  const CreateBudget({Key? key}) : super(key: key);
 
   @override
   _CreateBudgetState createState() => _CreateBudgetState();
 }
 
-String expenseTypeSelected;
-int monthSelected;
-int yearSelected;
+late String expenseTypeSelected;
+late int monthSelected;
+late int yearSelected;
 
 class _CreateBudgetState extends State<CreateBudget> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  User loggedInUser;
-  String email;
+  late User loggedInUser;
+  late String email;
   //String budgetTitle;
-  double budgetLimit;
+  late double? budgetLimit;
   String currencySelected = 'INR';
 
   @override
@@ -36,7 +36,7 @@ class _CreateBudgetState extends State<CreateBudget> {
       final user = _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
-        email = loggedInUser.email;
+        email = loggedInUser.email ?? "";
       }
     } on Exception catch (e) {
       print(e);
@@ -231,9 +231,9 @@ class _CreateBudgetState extends State<CreateBudget> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               elevation: 5,
+                              backgroundColor: Colors.lightBlue,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              primary: Colors.lightBlue),
+                                  borderRadius: BorderRadius.circular(30))),
                           onPressed: () {
                             // if (budgetTitle == null || budgetTitle == '') {
                             //   budgetTitle = '$expenseTypeSelected budget';
@@ -319,7 +319,8 @@ class _CreateBudgetState extends State<CreateBudget> {
 }
 
 class MonthYearListTile extends StatelessWidget {
-  MonthYearListTile({this.month, this.year, this.onTap});
+  MonthYearListTile(
+      {required this.month, required this.year, required this.onTap});
 
   final int month;
   final int year;
@@ -350,7 +351,7 @@ class MonthYearListTile extends StatelessWidget {
           style: (monthSelected == month && yearSelected == year)
               ? TextButton.styleFrom(backgroundColor: Colors.lightBlue)
               : null,
-          onPressed: onTap,
+          onPressed: onTap(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -382,7 +383,8 @@ class MonthYearListTile extends StatelessWidget {
 }
 
 class ExpenseTypeCard extends StatelessWidget {
-  ExpenseTypeCard({this.expenseType, this.icon, this.onTap});
+  ExpenseTypeCard(
+      {required this.expenseType, required this.icon, required this.onTap});
 
   final IconData icon;
   final String expenseType;
@@ -411,7 +413,7 @@ class ExpenseTypeCard extends StatelessWidget {
           ),
         ),
         child: TextButton(
-          onPressed: onTap,
+          onPressed: onTap(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'constants.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -15,9 +13,9 @@ DateTime dateSelected = dateToday;
 int monthSelected = dateToday.month;
 int yearSelected = dateToday.year;
 
-DateTime date1, date2, date3, date4, date5, date6, date7;
-int month1, month2, month3, month4, month5, month6;
-int year1;
+DateTime? date1, date2, date3, date4, date5, date6, date7;
+int? month1, month2, month3, month4, month5, month6;
+int? year1;
 
 class _TransactionsPageState extends State<TransactionsPage> {
   var dailySelected = true;
@@ -25,8 +23,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  User loggedInUser;
-  DocumentReference docRef;
+  late User loggedInUser;
+  late DocumentReference docRef;
 
   void getCurrentUser() async {
     try {
@@ -302,9 +300,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 fontWeight: FontWeight.bold),
                             dropdownColor: Colors.white,
                             value: dropDownValue,
-                            onChanged: (newValue) {
+                            onChanged: (String? newValue) {
                               setState(() {
-                                dropDownValue = newValue;
+                                dropDownValue = newValue!;
                               });
                             },
                             items: <String>[
@@ -364,13 +362,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
             icon: Icon(Icons.arrow_left),
             onPressed: () {
               setState(() {
-                date1 = date1.subtract(Duration(days: 7));
-                date2 = date2.subtract(Duration(days: 7));
-                date3 = date3.subtract(Duration(days: 7));
-                date4 = date4.subtract(Duration(days: 7));
-                date5 = date5.subtract(Duration(days: 7));
-                date6 = date6.subtract(Duration(days: 7));
-                date7 = date7.subtract(Duration(days: 7));
+                date1 = date1!.subtract(Duration(days: 7));
+                date2 = date2!.subtract(Duration(days: 7));
+                date3 = date3!.subtract(Duration(days: 7));
+                date4 = date4!.subtract(Duration(days: 7));
+                date5 = date5!.subtract(Duration(days: 7));
+                date6 = date6!.subtract(Duration(days: 7));
+                date7 = date7!.subtract(Duration(days: 7));
               });
             },
           ),
@@ -387,58 +385,58 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   <Widget>[
                 DateMonthListTile(
                     day: days[0],
-                    date: date1,
+                    date: date1!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date1;
+                        dateSelected = date1!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[1],
-                    date: date2,
+                    date: date2!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date2;
+                        dateSelected = date2!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[2],
-                    date: date3,
+                    date: date3!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date3;
+                        dateSelected = date3!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[3],
-                    date: date4,
+                    date: date4!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date4;
+                        dateSelected = date4!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[4],
-                    date: date5,
+                    date: date5!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date5;
+                        dateSelected = date5!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[5],
-                    date: date6,
+                    date: date6!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date6;
+                        dateSelected = date6!;
                       });
                     }),
                 DateMonthListTile(
                     day: days[6],
-                    date: date7,
+                    date: date7!,
                     onTap: () {
                       setState(() {
-                        dateSelected = date7;
+                        dateSelected = date7!;
                       });
                     }),
               ],
@@ -452,13 +450,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
             icon: Icon(Icons.arrow_right),
             onPressed: () {
               setState(() {
-                date1 = date1.add(Duration(days: 7));
-                date2 = date2.add(Duration(days: 7));
-                date3 = date3.add(Duration(days: 7));
-                date4 = date4.add(Duration(days: 7));
-                date5 = date5.add(Duration(days: 7));
-                date6 = date6.add(Duration(days: 7));
-                date7 = date7.add(Duration(days: 7));
+                date1 = date1!.add(Duration(days: 7));
+                date2 = date2!.add(Duration(days: 7));
+                date3 = date3!.add(Duration(days: 7));
+                date4 = date4!.add(Duration(days: 7));
+                date5 = date5!.add(Duration(days: 7));
+                date6 = date6!.add(Duration(days: 7));
+                date7 = date7!.add(Duration(days: 7));
               });
             },
           ),
@@ -486,7 +484,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   month4 = 10;
                   month5 = 11;
                   month6 = 12;
-                  year1 -= 1;
+                  year1 = year1! - 1;
                 } else {
                   month1 = 1;
                   month2 = 2;
@@ -509,57 +507,57 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 //dailySelected ?
                 <Widget>[
               MonthYearListTile(
-                  month: month1,
-                  year: year1,
+                  month: month1!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month1;
-                      yearSelected = year1;
+                      monthSelected = month1!;
+                      yearSelected = year1!;
                     });
                   }),
               MonthYearListTile(
-                  month: month2,
-                  year: year1,
+                  month: month2!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month2;
-                      yearSelected = year1;
+                      monthSelected = month2!;
+                      yearSelected = year1!;
                     });
                   }),
               MonthYearListTile(
-                  month: month3,
-                  year: year1,
+                  month: month3!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month3;
-                      yearSelected = year1;
+                      monthSelected = month3!;
+                      yearSelected = year1!;
                     });
                   }),
               MonthYearListTile(
-                  month: month4,
-                  year: year1,
+                  month: month4!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month4;
-                      yearSelected = year1;
+                      monthSelected = month4!;
+                      yearSelected = year1!;
                     });
                   }),
               MonthYearListTile(
-                  month: month5,
-                  year: year1,
+                  month: month5!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month5;
-                      yearSelected = year1;
+                      monthSelected = month5!;
+                      yearSelected = year1!;
                     });
                   }),
               MonthYearListTile(
-                  month: month6,
-                  year: year1,
+                  month: month6!,
+                  year: year1!,
                   onTap: () {
                     setState(() {
-                      monthSelected = month6;
-                      yearSelected = year1;
+                      monthSelected = month6!;
+                      yearSelected = year1!;
                     });
                   }),
             ],
@@ -586,7 +584,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   month4 = 4;
                   month5 = 5;
                   month6 = 6;
-                  year1 += 1;
+                  year1 = year1! + 1;
                 }
               });
             },
@@ -627,7 +625,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
             return notFound(context);
           } else {
             return ListView.separated(
@@ -635,16 +633,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return TransactionCard(
-                    title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] +
+                    title: snapshot.data!.docs[index]['Details'],
+                    value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
-                        snapshot.data.docs[index]['Amount'].toString(),
+                        snapshot.data!.docs[index]['Amount'].toString(),
                     //time: snapshot.data.docs[index]['Time'],
-                    type: snapshot.data.docs[index]['Type'],
-                    tId: snapshot.data.docs[index].id,
+                    type: snapshot.data!.docs[index]['Type'],
+                    tId: snapshot.data!.docs[index].id,
+                    time: snapshot.data!.docs[index]['Time'],
                   );
                 });
           }
@@ -662,7 +661,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
             return notFound(context);
           } else {
             return ListView.separated(
@@ -670,16 +669,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return TransactionCard(
-                    title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] +
+                    title: snapshot.data!.docs[index]['Details'],
+                    value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
-                        snapshot.data.docs[index]['Amount'].toString(),
-                    //time: snapshot.data.docs[index]['Time'],
-                    type: snapshot.data.docs[index]['Type'],
-                    tId: snapshot.data.docs[index].id,
+                        snapshot.data!.docs[index]['Amount'].toString(),
+                    time: snapshot.data!.docs[index]['Time'],
+                    type: snapshot.data!.docs[index]['Type'],
+                    tId: snapshot.data!.docs[index].id,
                   );
                 });
           }
@@ -696,7 +695,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
             return notFound(context);
           } else {
             return ListView.separated(
@@ -704,22 +703,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return TransactionCard(
-                    title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] +
+                    title: snapshot.data!.docs[index]['Details'],
+                    value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
-                        snapshot.data.docs[index]['Amount'].toString(),
+                        snapshot.data!.docs[index]['Amount'].toString(),
                     time:
                         // snapshot.data.docs[index]['Time'] +
                         //     ' ' +
-                        months[snapshot.data.docs[index]['Month'] - 1]
+                        months[snapshot.data!.docs[index]['Month'] - 1]
                                 .toString() +
                             ' ' +
-                            snapshot.data.docs[index]['Day'].toString(),
-                    type: snapshot.data.docs[index]['Type'],
-                    tId: snapshot.data.docs[index].id,
+                            snapshot.data!.docs[index]['Day'].toString(),
+                    type: snapshot.data!.docs[index]['Type'],
+                    tId: snapshot.data!.docs[index].id,
                   );
                 });
           }
@@ -738,7 +737,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data.docs?.length == 0) {
+          if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
             return notFound(context);
           } else {
             return ListView.separated(
@@ -746,22 +745,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return TransactionCard(
-                    title: snapshot.data.docs[index]['Details'],
-                    value: snapshot.data.docs[index]['Currency'] +
+                    title: snapshot.data!.docs[index]['Details'],
+                    value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
-                        snapshot.data.docs[index]['Amount'].toString(),
+                        snapshot.data!.docs[index]['Amount'].toString(),
                     time:
                         //snapshot.data.docs[index]['Time'] +
                         //     ' ' +
-                        months[snapshot.data.docs[index]['Month'] - 1]
+                        months[snapshot.data!.docs[index]['Month'] - 1]
                                 .toString() +
                             ' ' +
-                            snapshot.data.docs[index]['Day'].toString(),
-                    type: snapshot.data.docs[index]['Type'],
-                    tId: snapshot.data.docs[index].id,
+                            snapshot.data!.docs[index]['Day'].toString(),
+                    type: snapshot.data!.docs[index]['Type'],
+                    tId: snapshot.data!.docs[index].id,
                   );
                 });
           }
@@ -770,7 +769,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
 }
 
 class DateMonthListTile extends StatelessWidget {
-  DateMonthListTile({this.day, this.date, this.onTap});
+  DateMonthListTile(
+      {required this.day, required this.date, required this.onTap});
 
   final String day;
   final DateTime date;
@@ -793,7 +793,7 @@ class DateMonthListTile extends StatelessWidget {
               style: (dateSelected == date)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap,
+              onPressed: onTap(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -816,7 +816,8 @@ class DateMonthListTile extends StatelessWidget {
 }
 
 class MonthYearListTile extends StatelessWidget {
-  MonthYearListTile({this.month, this.year, this.onTap});
+  MonthYearListTile(
+      {required this.month, required this.year, required this.onTap});
 
   final int month;
   final int year;
@@ -834,7 +835,7 @@ class MonthYearListTile extends StatelessWidget {
               style: (monthSelected == month && yearSelected == year)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap,
+              onPressed: onTap(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class RootPage extends StatefulWidget {
-  const RootPage({Key key}) : super(key: key);
+  const RootPage({Key? key}) : super(key: key);
 
   @override
   _RootPageState createState() => _RootPageState();
@@ -30,11 +30,11 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
-    User user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return new HomePage();
-    } else {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
       return new LoginPage();
+    } else {
+      return new HomePage();
     }
   }
 }

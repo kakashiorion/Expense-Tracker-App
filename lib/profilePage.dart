@@ -4,13 +4,12 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracker_app/cameraPicture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'loginPage.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -54,12 +53,12 @@ class _ProfilePageState extends State<ProfilePage> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
-          if (documentSnapshot.data()['Name'] != null)
-            name = documentSnapshot.data()['Name'];
-          if (documentSnapshot.data()['Date Of Birth'] != null)
-            dob = documentSnapshot.data()['Date Of Birth'];
-          if (documentSnapshot.data()['Photo Location'] != null) {
-            imageLocation = documentSnapshot.data()['Photo Location'];
+          if (documentSnapshot.get('Name') != null)
+            name = documentSnapshot.get('Name');
+          if (documentSnapshot.get('Date Of Birth') != null)
+            dob = documentSnapshot.get('Date Of Birth');
+          if (documentSnapshot.get('Photo Location') != null) {
+            imageLocation = documentSnapshot.get('Photo Location');
             takingPicture = true;
           }
         });
@@ -85,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   offset: Offset(0.5, 0.5),
                   blurRadius: 0.5,
                   spreadRadius: 0.5,
-                  color: Colors.grey[200])
+                  color: Colors.grey)
             ],
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
@@ -154,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     offset: Offset(1, 1),
                     blurRadius: 2,
                     spreadRadius: 2,
-                    color: Colors.grey[300])
+                    color: Colors.grey)
               ],
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
