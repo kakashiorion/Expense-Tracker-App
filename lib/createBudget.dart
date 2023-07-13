@@ -11,10 +11,6 @@ class CreateBudget extends StatefulWidget {
   _CreateBudgetState createState() => _CreateBudgetState();
 }
 
-late String expenseTypeSelected;
-late int monthSelected;
-late int yearSelected;
-
 class _CreateBudgetState extends State<CreateBudget> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   late User loggedInUser;
@@ -22,6 +18,9 @@ class _CreateBudgetState extends State<CreateBudget> {
   //String budgetTitle;
   late double? budgetLimit;
   String currencySelected = 'INR';
+  late String expenseTypeSelected;
+  late int monthSelected;
+  late int yearSelected;
 
   @override
   void initState() {
@@ -98,6 +97,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         ExpenseTypeCard(
                           expenseType: 'Food',
                           icon: Icons.restaurant_outlined,
+                          expenseTypeSelected: expenseTypeSelected,
                           onTap: () {
                             setState(() {
                               expenseTypeSelected = 'Food';
@@ -107,6 +107,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         ExpenseTypeCard(
                           expenseType: 'Travel',
                           icon: Icons.flight_outlined,
+                          expenseTypeSelected: expenseTypeSelected,
                           onTap: () {
                             setState(() {
                               expenseTypeSelected = 'Travel';
@@ -116,6 +117,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         ExpenseTypeCard(
                           expenseType: 'Shopping',
                           icon: Icons.shopping_basket_outlined,
+                          expenseTypeSelected: expenseTypeSelected,
                           onTap: () {
                             setState(() {
                               expenseTypeSelected = 'Shopping';
@@ -125,6 +127,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         ExpenseTypeCard(
                           expenseType: 'Utility',
                           icon: Icons.wb_incandescent_outlined,
+                          expenseTypeSelected: expenseTypeSelected,
                           onTap: () {
                             setState(() {
                               expenseTypeSelected = 'Utility';
@@ -291,6 +294,8 @@ class _CreateBudgetState extends State<CreateBudget> {
       MonthYearListTile tile = MonthYearListTile(
         month: monthDisplayed,
         year: yearDisplayed,
+        monthSelected: monthSelected,
+        yearSelected: yearSelected,
         onTap: () {
           setState(() {
             monthSelected = monthDisplayed;
@@ -320,11 +325,17 @@ class _CreateBudgetState extends State<CreateBudget> {
 
 class MonthYearListTile extends StatelessWidget {
   MonthYearListTile(
-      {required this.month, required this.year, required this.onTap});
+      {required this.month,
+      required this.year,
+      required this.onTap,
+      required this.monthSelected,
+      required this.yearSelected});
 
   final int month;
   final int year;
-  final Function onTap;
+  final int monthSelected;
+  final int yearSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -351,7 +362,7 @@ class MonthYearListTile extends StatelessWidget {
           style: (monthSelected == month && yearSelected == year)
               ? TextButton.styleFrom(backgroundColor: Colors.lightBlue)
               : null,
-          onPressed: onTap(),
+          onPressed: onTap,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -384,11 +395,15 @@ class MonthYearListTile extends StatelessWidget {
 
 class ExpenseTypeCard extends StatelessWidget {
   ExpenseTypeCard(
-      {required this.expenseType, required this.icon, required this.onTap});
+      {required this.expenseType,
+      required this.icon,
+      required this.onTap,
+      required this.expenseTypeSelected});
 
   final IconData icon;
   final String expenseType;
-  final Function onTap;
+  final String expenseTypeSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +428,7 @@ class ExpenseTypeCard extends StatelessWidget {
           ),
         ),
         child: TextButton(
-          onPressed: onTap(),
+          onPressed: onTap,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

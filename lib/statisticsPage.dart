@@ -15,15 +15,14 @@ class StatisticsPage extends StatefulWidget {
   _StatisticsPageState createState() => _StatisticsPageState();
 }
 
-late int monthSelected;
-late int yearSelected;
-
 class _StatisticsPageState extends State<StatisticsPage> {
   final _auth = FirebaseAuth.instance;
   dynamic loggedInUser;
   late DocumentReference docRef;
   bool monthlyStatsSelected = false;
 
+  late int monthSelected;
+  late int yearSelected;
   int touchIndex = -1;
 
   final Color foodColor = Color(0xff70c1b3);
@@ -818,6 +817,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
       var yearDisplayed = year1;
       MonthYearListTile tile = MonthYearListTile(
         month: monthDisplayed,
+        monthSelected: monthSelected,
+        yearSelected: yearSelected,
         year: yearDisplayed,
         onTap: () {
           setState(() {
@@ -1357,11 +1358,17 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
 class MonthYearListTile extends StatelessWidget {
   MonthYearListTile(
-      {required this.month, required this.year, required this.onTap});
+      {required this.month,
+      required this.year,
+      required this.onTap,
+      required this.yearSelected,
+      required this.monthSelected});
 
   final int month;
   final int year;
-  final Function onTap;
+  final int yearSelected;
+  final int monthSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -1375,7 +1382,7 @@ class MonthYearListTile extends StatelessWidget {
               style: (monthSelected == month && yearSelected == year)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap(),
+              onPressed: onTap,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

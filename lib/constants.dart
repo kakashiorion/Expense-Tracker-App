@@ -68,7 +68,7 @@ class IconListTile extends StatelessWidget {
 
   final String name;
   final IconData icon;
-  final Function onTap;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class IconListTile extends StatelessWidget {
                 disabledColor: Colors.white,
                 color: Colors.white,
                 icon: Icon(icon),
-                onPressed: onTap(),
+                onPressed: onTap,
               ),
             ),
           ),
@@ -350,7 +350,7 @@ class TransactionTypeTile extends StatelessWidget {
 
   final TransactionType type;
   final CircleAvatar circleAvatar;
-  final Function onTap;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +368,7 @@ class TransactionTypeTile extends StatelessWidget {
             elevation: 8,
             shadowColor: Colors.grey,
           ),
-          onPressed: onTap(),
+          onPressed: onTap,
           child: Row(
             children: [
               Padding(

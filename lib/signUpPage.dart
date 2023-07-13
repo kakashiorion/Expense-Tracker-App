@@ -8,14 +8,13 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-String email = '';
-String password = '';
-String name = '';
-String dob = '';
-
 class _SignUpPageState extends State<SignUpPage> {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  String email = '';
+  String password = '';
+  String name = '';
+  String dob = '';
 
   @override
   Widget build(BuildContext context) {

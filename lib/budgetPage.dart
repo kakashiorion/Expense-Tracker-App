@@ -12,13 +12,13 @@ class BudgetPage extends StatefulWidget {
   _BudgetPageState createState() => _BudgetPageState();
 }
 
-late int monthSelected;
-late int yearSelected;
-
 class _BudgetPageState extends State<BudgetPage> {
   final _auth = FirebaseAuth.instance;
   dynamic loggedInUser;
   late DocumentReference docRef;
+
+  late int monthSelected;
+  late int yearSelected;
 
   void getCurrentUser() async {
     try {
@@ -333,6 +333,8 @@ class _BudgetPageState extends State<BudgetPage> {
       MonthYearListTile tile = MonthYearListTile(
         month: monthDisplayed,
         year: yearDisplayed,
+        monthSelected: monthSelected,
+        yearSelected: yearSelected,
         onTap: () {
           setState(() {
             monthSelected = monthDisplayed;
@@ -366,11 +368,17 @@ class _BudgetPageState extends State<BudgetPage> {
 
 class MonthYearListTile extends StatelessWidget {
   MonthYearListTile(
-      {required this.month, required this.year, required this.onTap});
+      {required this.month,
+      required this.year,
+      required this.onTap,
+      required this.monthSelected,
+      required this.yearSelected});
 
   final int month;
+  final int monthSelected;
   final int year;
-  final Function onTap;
+  final int yearSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -382,7 +390,7 @@ class MonthYearListTile extends StatelessWidget {
           style: (monthSelected == month && yearSelected == year)
               ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
               : null,
-          onPressed: onTap(),
+          onPressed: onTap,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

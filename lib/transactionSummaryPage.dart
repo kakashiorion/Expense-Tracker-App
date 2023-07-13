@@ -40,7 +40,6 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
   int day = DateTime.now().day;
   int month = DateTime.now().month;
   int year = DateTime.now().year;
-  //String time = '00:00';
 
   void setTransactionValues() {
     docRef.get().then((value) {
@@ -51,7 +50,6 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
       day = value['Day'];
       month = value['Month'];
       year = value['Year'];
-      //time = value['Time'];
       setState(() {});
     });
   }
@@ -429,33 +427,31 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
 
   Icon getIcon(String type) {
     var iconColor = Colors.white;
-    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.fastfood_outlined,
         color: iconColor,
       );
     } else if (type == TransactionType.Shopping.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.shopping_basket_outlined,
         color: iconColor,
       );
     } else if (type == TransactionType.Travel.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.flight_outlined,
         color: iconColor,
       );
     } else if (type == TransactionType.Utility.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.wb_incandescent_outlined,
         color: iconColor,
       );
-    } else if (type == TransactionType.Income.toString().substring(16)) {
-      icon = Icon(
+    } else {
+      return Icon(
         Icons.attach_money_outlined,
         color: iconColor,
       );
     }
-    return icon;
   }
 }

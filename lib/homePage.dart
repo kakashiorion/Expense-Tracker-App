@@ -9,7 +9,7 @@ import 'budgetPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -41,27 +41,25 @@ class _HomePageState extends State<HomePage> {
       },
       child: SafeArea(
         child: Scaffold(
-          floatingActionButton: activeIndex == 0
-              ? SizedBox(
-                  height: 45,
-                  child: FloatingActionButton(
-                    //shape: CircleBorder(side: BorderSide(width: 0, color: Colors.white)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                          return AddTransaction();
-                        }),
-                      );
-                    },
-                    backgroundColor: Colors.lightBlue,
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              : null,
+          floatingActionButton: SizedBox(
+            height: 45,
+            child: FloatingActionButton(
+              //shape: CircleBorder(side: BorderSide(width: 0, color: Colors.white)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return AddTransaction();
+                  }),
+                );
+              },
+              backgroundColor: Colors.lightBlue,
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: Colors.white,

@@ -5,21 +5,20 @@ import 'constants.dart';
 
 class TransactionsPage extends StatefulWidget {
   @override
-  _TransactionsPageState createState() => _TransactionsPageState();
+  State<TransactionsPage> createState() => _TransactionsPageState();
 }
-
-DateTime dateToday = DateTime.now();
-DateTime dateSelected = dateToday;
-int monthSelected = dateToday.month;
-int yearSelected = dateToday.year;
-
-DateTime? date1, date2, date3, date4, date5, date6, date7;
-int? month1, month2, month3, month4, month5, month6;
-int? year1;
 
 class _TransactionsPageState extends State<TransactionsPage> {
   var dailySelected = true;
   var dropDownValue = 'All Transactions';
+  DateTime dateToday = DateTime.now();
+  DateTime dateSelected = DateTime.now();
+  int monthSelected = DateTime.now().month;
+  int yearSelected = DateTime.now().year;
+
+  DateTime? date1, date2, date3, date4, date5, date6, date7;
+  int? month1, month2, month3, month4, month5, month6;
+  int? year1;
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -181,7 +180,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
                 Container(
                   height: 36,
                   width: size.width - 20.0,
@@ -197,7 +196,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
+                      children: [
                         Expanded(
                           child: TextButton(
                             style: dailySelected
@@ -207,10 +206,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                         borderRadius:
                                             new BorderRadius.circular(8.0)))
                                 : null,
-                            onPressed: () {
+                            onPressed: () => {
                               setState(() {
                                 dailySelected = true;
-                              });
+                              })
                             },
                             child: Text(
                               'Daily',
@@ -232,10 +231,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(8.0))),
-                            onPressed: () {
+                            onPressed: () => {
                               setState(() {
                                 dailySelected = false;
-                              });
+                              })
                             },
                             child: Text(
                               'Monthly',
@@ -263,7 +262,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
+                children: [
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, bottom: 0),
@@ -300,10 +299,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 fontWeight: FontWeight.bold),
                             dropdownColor: Colors.white,
                             value: dropDownValue,
-                            onChanged: (String? newValue) {
+                            onChanged: (String? newValue) => {
                               setState(() {
                                 dropDownValue = newValue!;
-                              });
+                              })
                             },
                             items: <String>[
                               'All Transactions',
@@ -360,7 +359,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: IconButton(
             iconSize: 16,
             icon: Icon(Icons.arrow_left),
-            onPressed: () {
+            onPressed: () => {
               setState(() {
                 date1 = date1!.subtract(Duration(days: 7));
                 date2 = date2!.subtract(Duration(days: 7));
@@ -369,7 +368,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 date5 = date5!.subtract(Duration(days: 7));
                 date6 = date6!.subtract(Duration(days: 7));
                 date7 = date7!.subtract(Duration(days: 7));
-              });
+              })
             },
           ),
         ),
@@ -382,63 +381,70 @@ class _TransactionsPageState extends State<TransactionsPage> {
               scrollDirection: Axis.horizontal,
               children:
                   //dailySelected ?
-                  <Widget>[
+                  [
                 DateMonthListTile(
                     day: days[0],
                     date: date1!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date1!;
-                      });
-                    }),
+                    dateSelected: dateSelected,
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date1!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[1],
                     date: date2!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date2!;
-                      });
-                    }),
+                    dateSelected: dateSelected,
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date2!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[2],
                     date: date3!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date3!;
-                      });
-                    }),
+                    dateSelected: dateSelected,
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date3!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[3],
                     date: date4!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date4!;
-                      });
-                    }),
+                    dateSelected: dateSelected,
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date4!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[4],
+                    dateSelected: dateSelected,
                     date: date5!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date5!;
-                      });
-                    }),
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date5!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[5],
+                    dateSelected: dateSelected,
                     date: date6!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date6!;
-                      });
-                    }),
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date6!;
+                          })
+                        }),
                 DateMonthListTile(
                     day: days[6],
+                    dateSelected: dateSelected,
                     date: date7!,
-                    onTap: () {
-                      setState(() {
-                        dateSelected = date7!;
-                      });
-                    }),
+                    onTap: () => {
+                          setState(() {
+                            dateSelected = date7!;
+                          })
+                        }),
               ],
             ),
           ),
@@ -448,7 +454,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: IconButton(
             iconSize: 16,
             icon: Icon(Icons.arrow_right),
-            onPressed: () {
+            onPressed: () => {
               setState(() {
                 date1 = date1!.add(Duration(days: 7));
                 date2 = date2!.add(Duration(days: 7));
@@ -457,7 +463,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 date5 = date5!.add(Duration(days: 7));
                 date6 = date6!.add(Duration(days: 7));
                 date7 = date7!.add(Duration(days: 7));
-              });
+              })
             },
           ),
         ),
@@ -475,7 +481,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: IconButton(
             iconSize: 16,
             icon: Icon(Icons.arrow_left),
-            onPressed: () {
+            onPressed: () => {
               setState(() {
                 if (month1 == 1) {
                   month1 = 7;
@@ -493,7 +499,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   month5 = 5;
                   month6 = 6;
                 }
-              });
+              })
             },
           ),
         ),
@@ -505,61 +511,73 @@ class _TransactionsPageState extends State<TransactionsPage> {
             scrollDirection: Axis.horizontal,
             children:
                 //dailySelected ?
-                <Widget>[
+                [
               MonthYearListTile(
                   month: month1!,
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month1!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month1!;
+                          yearSelected = year1!;
+                        })
+                      }),
               MonthYearListTile(
                   month: month2!,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month2!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month2!;
+                          yearSelected = year1!;
+                        })
+                      }),
               MonthYearListTile(
                   month: month3!,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month3!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month3!;
+                          yearSelected = year1!;
+                        })
+                      }),
               MonthYearListTile(
                   month: month4!,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month4!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month4!;
+                          yearSelected = year1!;
+                        })
+                      }),
               MonthYearListTile(
                   month: month5!,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month5!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month5!;
+                          yearSelected = year1!;
+                        })
+                      }),
               MonthYearListTile(
                   month: month6!,
                   year: year1!,
-                  onTap: () {
-                    setState(() {
-                      monthSelected = month6!;
-                      yearSelected = year1!;
-                    });
-                  }),
+                  monthSelected: monthSelected,
+                  yearSelected: yearSelected,
+                  onTap: () => {
+                        setState(() {
+                          monthSelected = month6!;
+                          yearSelected = year1!;
+                        })
+                      }),
             ],
           ),
         ),
@@ -568,7 +586,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: IconButton(
             iconSize: 16,
             icon: Icon(Icons.arrow_right),
-            onPressed: () {
+            onPressed: () => {
               setState(() {
                 if (month1 == 1) {
                   month1 = 7;
@@ -586,7 +604,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   month6 = 6;
                   year1 = year1! + 1;
                 }
-              });
+              })
             },
           ),
         ),
@@ -622,7 +640,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .where('Day', isEqualTo: date.day)
             .where('Month', isEqualTo: date.month)
             .where('Year', isEqualTo: date.year)
-            //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
@@ -640,10 +657,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
                         snapshot.data!.docs[index]['Amount'].toString(),
-                    //time: snapshot.data.docs[index]['Time'],
                     type: snapshot.data!.docs[index]['Type'],
                     tId: snapshot.data!.docs[index].id,
-                    time: snapshot.data!.docs[index]['Time'],
+                    time: months[snapshot.data!.docs[index]['Month'] - 1]
+                            .toString() +
+                        ' ' +
+                        snapshot.data!.docs[index]['Day'].toString(),
                   );
                 });
           }
@@ -658,7 +677,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .where('Month', isEqualTo: date.month)
             .where('Year', isEqualTo: date.year)
             .where('Type', isEqualTo: transactionType)
-            //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
@@ -676,7 +694,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
                         snapshot.data!.docs[index]['Amount'].toString(),
-                    time: snapshot.data!.docs[index]['Time'],
+                    time: months[snapshot.data!.docs[index]['Month'] - 1]
+                            .toString() +
+                        ' ' +
+                        snapshot.data!.docs[index]['Day'].toString(),
                     type: snapshot.data!.docs[index]['Type'],
                     tId: snapshot.data!.docs[index].id,
                   );
@@ -692,7 +713,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .where('Month', isEqualTo: month)
             .where('Year', isEqualTo: year)
             .orderBy('Day')
-            //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
@@ -710,13 +730,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
                         snapshot.data!.docs[index]['Amount'].toString(),
-                    time:
-                        // snapshot.data.docs[index]['Time'] +
-                        //     ' ' +
-                        months[snapshot.data!.docs[index]['Month'] - 1]
-                                .toString() +
-                            ' ' +
-                            snapshot.data!.docs[index]['Day'].toString(),
+                    time: months[snapshot.data!.docs[index]['Month'] - 1]
+                            .toString() +
+                        ' ' +
+                        snapshot.data!.docs[index]['Day'].toString(),
                     type: snapshot.data!.docs[index]['Type'],
                     tId: snapshot.data!.docs[index].id,
                   );
@@ -734,7 +751,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
             .where('Year', isEqualTo: year)
             .where('Type', isEqualTo: transactionType)
             .orderBy('Day')
-            //.orderBy('Time')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.docs.length == 0) {
@@ -752,13 +768,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     value: snapshot.data!.docs[index]['Currency'] +
                         ' ' +
                         snapshot.data!.docs[index]['Amount'].toString(),
-                    time:
-                        //snapshot.data.docs[index]['Time'] +
-                        //     ' ' +
-                        months[snapshot.data!.docs[index]['Month'] - 1]
-                                .toString() +
-                            ' ' +
-                            snapshot.data!.docs[index]['Day'].toString(),
+                    time: months[snapshot.data!.docs[index]['Month'] - 1]
+                            .toString() +
+                        ' ' +
+                        snapshot.data!.docs[index]['Day'].toString(),
                     type: snapshot.data!.docs[index]['Type'],
                     tId: snapshot.data!.docs[index].id,
                   );
@@ -770,18 +783,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
 class DateMonthListTile extends StatelessWidget {
   DateMonthListTile(
-      {required this.day, required this.date, required this.onTap});
+      {required this.day,
+      required this.date,
+      required this.onTap,
+      required this.dateSelected});
 
   final String day;
   final DateTime date;
-  final Function onTap;
+  final DateTime dateSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 10, left: 5, right: 5),
       child: Column(
-        children: <Widget>[
+        children: [
           Text(
             day,
             style: weekdayText,
@@ -793,7 +810,7 @@ class DateMonthListTile extends StatelessWidget {
               style: (dateSelected == date)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap(),
+              onPressed: onTap,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -817,25 +834,31 @@ class DateMonthListTile extends StatelessWidget {
 
 class MonthYearListTile extends StatelessWidget {
   MonthYearListTile(
-      {required this.month, required this.year, required this.onTap});
+      {required this.month,
+      required this.year,
+      required this.onTap,
+      required this.monthSelected,
+      required this.yearSelected});
 
   final int month;
   final int year;
-  final Function onTap;
+  final int monthSelected;
+  final int yearSelected;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(5),
       child: Column(
-        children: <Widget>[
+        children: [
           SizedBox(
             height: 60,
             child: TextButton(
               style: (monthSelected == month && yearSelected == year)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
-              onPressed: onTap(),
+              onPressed: onTap,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

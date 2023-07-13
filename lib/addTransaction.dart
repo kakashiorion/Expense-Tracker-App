@@ -8,10 +8,8 @@ import 'package:currency_picker/currency_picker.dart';
 
 class AddTransaction extends StatefulWidget {
   @override
-  _AddTransactionState createState() => _AddTransactionState();
+  State<AddTransaction> createState() => _AddTransactionState();
 }
-
-late TransactionType transactionTypeSelected;
 
 class _AddTransactionState extends State<AddTransaction>
     with SingleTickerProviderStateMixin {
@@ -19,6 +17,7 @@ class _AddTransactionState extends State<AddTransaction>
   final _firestore = FirebaseFirestore.instance;
   late User loggedInUser;
   late DocumentReference docRef;
+  late TransactionType transactionTypeSelected;
 
   int progressValue = 1;
   late String transactionDetails;
@@ -525,9 +524,6 @@ class _AddTransactionState extends State<AddTransaction>
                                         'Day': dateDetails.day,
                                         'Month': dateDetails.month,
                                         'Year': dateDetails.year,
-                                        // 'Time': (dateDetails.hour < 10 ? '0' + dateDetails.hour.toString() : dateDetails.hour.toString()) +
-                                        //     ':' +
-                                        //     (dateDetails.minute < 10 ? '0' + dateDetails.minute.toString() : dateDetails.minute.toString()),
                                         'Currency': currencySelected
                                       });
 
