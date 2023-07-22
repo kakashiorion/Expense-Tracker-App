@@ -5,29 +5,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TransactionSummaryPage extends StatefulWidget {
-  TransactionSummaryPage(this.transactionId);
-  final transactionId;
+  final String transactionId;
+
+  const TransactionSummaryPage({super.key, required this.transactionId});
 
   @override
-  State<TransactionSummaryPage> createState() =>
-      _TransactionSummaryPageState(transactionId);
+  State<TransactionSummaryPage> createState() => _TransactionSummaryPageState();
 }
 
 class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
-  _TransactionSummaryPageState(this.transactionId);
-  final String transactionId;
-  late DocumentReference docRef;
-  late User user;
+  _TransactionSummaryPageState();
 
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser!;
-    docRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.email)
-        .collection('Transactions')
-        .doc(transactionId);
     setTransactionValues();
   }
 
@@ -42,7 +33,13 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
   int year = DateTime.now().year;
 
   void setTransactionValues() {
-    docRef.get().then((value) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.email)
+        .collection('Transactions')
+        .doc(widget.transactionId)
+        .get()
+        .then((value) {
       type = value['Type'];
       details = value['Details'];
       amount = value['Amount'];
@@ -77,7 +74,6 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Container(
-            width: size.width - 20,
             decoration: BoxDecoration(),
             child: Column(
               children: [
@@ -85,7 +81,6 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    //border: Border.all(width: 1, color: Colors.black, style: BorderStyle.solid),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,17 +299,46 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 16.0),
+                  child: editing
+                      ? SizedBox()
+                      : SizedBox(
+                          width: size.width / 1.5,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('DONE',
+                                style: inputTextStyle.copyWith(
+                                    color: Colors.white)),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 48),
+                              backgroundColor: Colors.lightBlue,
+                              elevation: 2,
+                              shadowColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(
                       top: 20, bottom: 10, left: 30, right: 30),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: size.width / 3,
+                        width: size.width / 4,
                         child: TextButton(
                           onPressed: () async {
                             if (editing) {
-                              docRef.update({
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser?.email)
+                                  .collection('Transactions')
+                                  .doc(widget.transactionId)
+                                  .update({
                                 'Type': type,
                                 'Details': details,
                                 'Day': day,
@@ -349,7 +373,10 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                         ),
                       ),
                       SizedBox(
-                        width: size.width / 3,
+                        width: editing ? 0 : 16,
+                      ),
+                      SizedBox(
+                        width: editing ? 0 : size.width / 4,
                         child: editing
                             ? null
                             : TextButton(
@@ -383,7 +410,13 @@ class _TransactionSummaryPageState extends State<TransactionSummaryPage> {
                                       });
                                   if (deleted) {
                                     Navigator.of(context).pop();
-                                    docRef.delete();
+                                    FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser?.email)
+                                        .collection('Transactions')
+                                        .doc(widget.transactionId)
+                                        .delete();
                                   }
                                 },
                                 style: TextButton.styleFrom(

@@ -12,35 +12,12 @@ class CreateBudget extends StatefulWidget {
 }
 
 class _CreateBudgetState extends State<CreateBudget> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  late User loggedInUser;
-  late String email;
-  //String budgetTitle;
-  late double? budgetLimit;
+  String? email = FirebaseAuth.instance.currentUser?.email;
+  double? budgetLimit = 0.0;
   String currencySelected = 'INR';
-  late String expenseTypeSelected;
-  late int monthSelected;
-  late int yearSelected;
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-    monthSelected = DateTime.now().month;
-    yearSelected = DateTime.now().year;
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        email = loggedInUser.email ?? "";
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
+  String expenseTypeSelected = 'Food';
+  int monthSelected = DateTime.now().month;
+  int yearSelected = DateTime.now().year;
 
   @override
   Widget build(BuildContext context) {
@@ -137,31 +114,6 @@ class _CreateBudgetState extends State<CreateBudget> {
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.all(8.0),
-                  //   child: Text(
-                  //     'Enter a budget title (Optional)',
-                  //     style: titleText.copyWith(fontSize: 15),
-                  //   ),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: TextField(
-                  //       onChanged: (detailsText) {
-                  //         setState(() {
-                  //           budgetTitle = detailsText;
-                  //         });
-                  //       },
-                  //       cursorColor: Colors.black,
-                  //       decoration: InputDecoration(
-                  //           hintText: 'Groceries',
-                  //           hintStyle: titleText.copyWith(fontSize: 12),
-                  //           filled: true,
-                  //           fillColor: Colors.white,
-                  //           contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  //           border: OutlineInputBorder()),
-                  //       style: displayTextStyle),
-                  // ),
                   Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
@@ -238,10 +190,8 @@ class _CreateBudgetState extends State<CreateBudget> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30))),
                           onPressed: () {
-                            // if (budgetTitle == null || budgetTitle == '') {
-                            //   budgetTitle = '$expenseTypeSelected budget';
-                            // }
-                            final docRef = FirebaseFirestore.instance
+                            DocumentReference docRef = FirebaseFirestore
+                                .instance
                                 .collection('users')
                                 .doc(email);
                             //Add Budget details to Firestore
@@ -256,7 +206,6 @@ class _CreateBudgetState extends State<CreateBudget> {
                             });
                             Navigator.pop(context);
                           },
-
                           child: Text(
                             'Create',
                             style: TextStyle(
@@ -264,8 +213,6 @@ class _CreateBudgetState extends State<CreateBudget> {
                                 fontFamily: 'Lato',
                                 fontWeight: FontWeight.normal),
                           ),
-
-                          // backgroundColor: Colors.lightBlue,
                         ),
                       ),
                     ),
@@ -344,7 +291,6 @@ class MonthYearListTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          //border: Border.all(style: BorderStyle.solid, color: Colors.grey),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),

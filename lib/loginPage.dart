@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _auth = FirebaseAuth.instance;
-  late User? user;
+  User? user;
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
@@ -201,21 +201,31 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               onPressed: () async {
                                 try {
-                                  // final loginUser =
-                                  //     await _auth.signInWithEmailAndPassword(
-                                  //         email: email, password: password);
-                                  FirebaseFirestore.instance
+                                  bool docRefExists = await FirebaseFirestore
+                                      .instance
                                       .collection('users')
                                       .doc(email)
-                                      .set({
-                                    'Email': email,
-                                    'Password': password
-                                  }, SetOptions(merge: true));
-
-                                  await Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return HomePage();
-                                  }));
+                                      .get()
+                                      .then((value) {
+                                    return value.exists;
+                                  });
+                                  if (!docRefExists) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'No user with this email!'),
+                                          );
+                                        });
+                                  } else {
+                                    _auth.signInWithEmailAndPassword(
+                                        email: email, password: password);
+                                    await Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return HomePage();
+                                    }));
+                                  }
                                 } on FirebaseAuthException catch (e) {
                                   print(e);
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -257,10 +267,11 @@ class _LoginPageState extends State<LoginPage> {
                                     GoogleAuthProvider();
 
                                 try {
-                                  final UserCredential userCredential =
-                                      await _auth.signInWithPopup(authProvider);
-
-                                  user = userCredential.user!;
+                                  await _auth.signInWithPopup(authProvider);
+                                  await Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return HomePage();
+                                  }));
                                 } catch (e) {
                                   print(e);
                                 }
@@ -291,15 +302,19 @@ class _LoginPageState extends State<LoginPage> {
                                       .doc(user!.email);
                                   docRef.get().then((docSnapshot) => {
                                         if (!docSnapshot.exists)
+                                          //If first time signin in, create document
                                           {
                                             docRef.set({
                                               'Email': user!.email,
                                               'Photo Location': user!.photoURL,
-                                              'Name': 'Jack Philly',
-                                              'Date Of Birth': '01-01-2000'
+                                              'Name': user!.displayName,
                                             }, SetOptions(merge: true))
                                           }
                                       });
+                                  await Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return HomePage();
+                                  }));
                                 } catch (e) {
                                   print(e);
                                 }

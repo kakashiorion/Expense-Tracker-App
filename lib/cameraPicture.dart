@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -87,10 +88,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             if (snapshot.state == TaskState.success) {
               final String downloadUrl = await snapshot.ref.getDownloadURL();
               Navigator.pop(context, downloadUrl);
-              // await FirebaseFirestore.instance
-              //     .collection("users")
-              //     .doc(FirebaseAuth.instance.currentUser.email)
-              //     .update({'Photo Location': downloadUrl});
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser!.email)
+                  .update({'Photo Location': downloadUrl});
             }
           } catch (e) {
             // If an error occurs, log the error to the console.

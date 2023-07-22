@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracker_app/cameraPicture.dart';
@@ -16,60 +14,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _auth = FirebaseAuth.instance;
-  String name = '';
-  String email = '';
-  String dob = '';
-  dynamic loggedInUser;
-
-  var imageLocation = 'assets/images/profPhoto.jpg';
-  bool takingPicture = false;
-
-  void initState() {
-    super.initState();
-
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        getUserDetails();
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  void getUserDetails() {
-    email = loggedInUser.email;
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(email)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          if (documentSnapshot.get('Name') != null)
-            name = documentSnapshot.get('Name');
-          if (documentSnapshot.get('Date Of Birth') != null)
-            dob = documentSnapshot.get('Date Of Birth');
-          if (documentSnapshot.get('Photo Location') != null) {
-            imageLocation = documentSnapshot.get('Photo Location');
-            takingPicture = true;
-          }
-        });
-      }
-    });
-  }
+  String? email = FirebaseAuth.instance.currentUser?.email;
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(left: 5, right: 5),
                   child: OutlinedButton(
                     onPressed: () async {
-                      await _auth.signOut();
+                      await FirebaseAuth.instance.signOut();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return LoginPage();
@@ -166,26 +114,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            getPicture(takingPicture, imageLocation),
-                        minRadius: 40,
+                      FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(email)
+                            .get(),
+                        builder: (context, snapshot) {
+                          String imageLocation = snapshot.hasData
+                              ? snapshot.data!.get('Photo Location')
+                              : "";
+                          return CircleAvatar(
+                            backgroundImage: getPicture(imageLocation),
+                            minRadius: 40,
+                          );
+                        },
                       ),
                       SizedBox(
                         height: 30,
                         child: TextButton(
                             onPressed: () async {
-                              dynamic resultLocation =
-                                  await editProfilePicture(context);
-                              if (resultLocation != null) {
-                                setState(() {
-                                  takingPicture = true;
-                                  imageLocation = resultLocation;
-                                });
-                                users
-                                    .doc(email)
-                                    .update({'Photo Location': imageLocation});
-                              }
+                              await editProfilePicture(context);
+                              setState(() {});
                             },
                             child: Text(
                               'Edit Photo',
@@ -200,17 +149,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        name,
-                        style: displayTextStyle,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Budgeting Score :10',
-                        style: dayText,
-                      )
+                      FutureBuilder(
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(email)
+                              .get(),
+                          builder: (BuildContext context, snapshot) {
+                            return Text(
+                              snapshot.hasData
+                                  ? snapshot.data!.get('Name')
+                                  : "",
+                              style: displayTextStyle,
+                            );
+                          }),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Text(
+                      //   'Budgeting Score :10',
+                      //   style: dayText,
+                      // )
                     ],
                   ),
                 ],
@@ -234,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, left: 30),
                   child: Text(
-                    email,
+                    email ?? "",
                     style: appBarTitleText,
                   ),
                 ),
@@ -247,10 +205,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, left: 30),
-                  child: Text(
-                    dob,
-                    style: appBarTitleText,
-                  ),
+                  child: FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(email)
+                          .get(),
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.hasData
+                              ? snapshot.data!.get('Date Of Birth')
+                              : "",
+                          style: appBarTitleText,
+                        );
+                      }),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 30.0, left: 30),
@@ -277,34 +244,26 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  dynamic getPicture(bool takingPicture, String imageLocation) {
-    dynamic picture;
+  dynamic getPicture(String imageLocation) {
     try {
-      if (takingPicture) {
-        if (imageLocation.substring(0, 4) == 'http') {
-          picture = NetworkImage(imageLocation);
-        } else {
-          picture = FileImage(File(imageLocation));
-        }
-      } else {
-        picture = AssetImage('assets/images/profPhoto.jpg');
+      if (imageLocation.substring(0, 4) == 'http') {
+        return NetworkImage(imageLocation);
       }
+      return AssetImage('assets/images/profPhoto.jpg');
     } catch (e) {
       print(e);
-      picture = AssetImage('assets/images/profPhoto.jpg');
     }
-    return picture;
   }
 }
 
-Future<dynamic> editProfilePicture(context) async {
+Future<String> editProfilePicture(context) async {
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
 
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras[0];
   //final secondCamera = cameras[1];
-  final resultLocation =
+  final String resultLocation =
       await Navigator.push(context, MaterialPageRoute(builder: (context) {
     return TakePictureScreen(
       camera1: firstCamera,

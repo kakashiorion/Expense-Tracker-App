@@ -13,38 +13,19 @@ class BudgetPage extends StatefulWidget {
 }
 
 class _BudgetPageState extends State<BudgetPage> {
-  final _auth = FirebaseAuth.instance;
-  dynamic loggedInUser;
-  late DocumentReference docRef;
+  DocumentReference docRef = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.email);
 
-  late int monthSelected;
-  late int yearSelected;
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        docRef = FirebaseFirestore.instance.collection('users').doc(user.email);
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  void initState() {
-    super.initState();
-    getCurrentUser();
-    monthSelected = DateTime.now().month;
-    yearSelected = DateTime.now().year;
-  }
+  int monthSelected = DateTime.now().month;
+  int yearSelected = DateTime.now().year;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          height: 120,
+          padding: EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -71,7 +52,6 @@ class _BudgetPageState extends State<BudgetPage> {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         height: 40,
-                        //width: size.width - 120,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Text(
@@ -186,7 +166,6 @@ class _BudgetPageState extends State<BudgetPage> {
                                     child: Icon(
                                       Icons.delete,
                                       color: Colors.black,
-                                      //size: 20,
                                     ),
                                   ),
                                 ),
@@ -276,7 +255,6 @@ class _BudgetPageState extends State<BudgetPage> {
             double value = 0.0;
             snapshot.data!.docs.forEach((element) {
               value += element['Amount'];
-              //print('$elementValue  ${element['Details']}');
             });
             final ratio = value * 100 / limit;
             return Column(
@@ -430,19 +408,17 @@ class BudgetTile extends StatelessWidget {
   final String currency;
 
   Icon getIcon(String type) {
-    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
-      icon = Icon(Icons.fastfood_outlined);
+      return Icon(Icons.fastfood_outlined);
     } else if (type == TransactionType.Shopping.toString().substring(16)) {
-      icon = Icon(Icons.shopping_basket_outlined);
+      return Icon(Icons.shopping_basket_outlined);
     } else if (type == TransactionType.Travel.toString().substring(16)) {
-      icon = Icon(Icons.flight_outlined);
+      return Icon(Icons.flight_outlined);
     } else if (type == TransactionType.Utility.toString().substring(16)) {
-      icon = Icon(Icons.wb_incandescent_outlined);
-    } else if (type == TransactionType.Income.toString().substring(16)) {
-      icon = Icon(Icons.attach_money_outlined);
+      return Icon(Icons.wb_incandescent_outlined);
+    } else {
+      return Icon(Icons.attach_money_outlined);
     }
-    return icon;
   }
 
   @override
@@ -457,7 +433,8 @@ class BudgetTile extends StatelessWidget {
               color: Colors.red.withOpacity(0.4),
               spreadRadius: 1,
               blurRadius: 1,
-              offset: Offset(-2, 0), // changes position of shadow
+              // changes position of shadow
+              offset: Offset(-2, 0),
             ),
           ],
           color: Colors.white,

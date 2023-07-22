@@ -20,31 +20,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
   int? month1, month2, month3, month4, month5, month6;
   int? year1;
 
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  late User loggedInUser;
-  late DocumentReference docRef;
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        docRef = _firestore.collection('users').doc(loggedInUser.email);
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
+  DocumentReference docRef = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.email);
 
   @override
   void initState() {
     super.initState();
-    getCurrentUser();
-    displayToday();
+    initializeDates();
   }
 
-  void displayToday() {
+  void initializeDates() {
+    dateSelected = dateToday;
     year1 = dateToday.year;
     switch (dateToday.weekday) {
       case 1:
@@ -171,92 +158,106 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  height: 36,
-                  width: size.width - 20.0,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    border: Border.all(color: Colors.lightBlue),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(2),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            style: dailySelected
-                                ? TextButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(8.0)))
-                                : null,
-                            onPressed: () => {
-                              setState(() {
-                                dailySelected = true;
-                              })
-                            },
-                            child: Text(
-                              'Daily',
-                              style: TextStyle(
-                                  color: dailySelected
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 12,
-                                  fontFamily: 'Lato'),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: TextButton(
-                            style: dailySelected
-                                ? null
-                                : TextButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(8.0))),
-                            onPressed: () => {
-                              setState(() {
-                                dailySelected = false;
-                              })
-                            },
-                            child: Text(
-                              'Monthly',
-                              style: TextStyle(
-                                  color: dailySelected
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12,
-                                  fontFamily: 'Lato'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0.5, 0.5),
+                  blurRadius: 0.5,
+                  spreadRadius: 0.5,
+                  color: Colors.grey)
+            ],
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  border: Border.all(color: Colors.lightBlue),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
                   ),
                 ),
-                dailySelected ? getDates() : getMonths(),
-              ],
-            ),
+                child: Padding(
+                  padding: EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                          style: dailySelected
+                              ? TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(8.0)))
+                              : null,
+                          onPressed: () => {
+                            setState(() {
+                              dailySelected = true;
+                            })
+                          },
+                          child: Text(
+                            'Daily',
+                            style: TextStyle(
+                                color:
+                                    dailySelected ? Colors.black : Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Lato'),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                          style: dailySelected
+                              ? null
+                              : TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(8.0))),
+                          onPressed: () => {
+                            setState(() {
+                              dailySelected = false;
+                            })
+                          },
+                          child: Text(
+                            'Monthly',
+                            style: TextStyle(
+                                color:
+                                    dailySelected ? Colors.white : Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Lato'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              dailySelected ? getDates() : getMonths(),
+            ],
           ),
-          Container(
-            width: size.width,
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -268,7 +269,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         const EdgeInsets.only(left: 15, right: 15, bottom: 0),
                     child: Container(
                       height: 30,
-                      width: size.width / 3,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -281,7 +281,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         ],
                         border: Border.all(
                           color: Colors.lightBlue,
-                          width: 0.5,
+                          width: 1,
                         ),
                       ),
                       child: Padding(
@@ -290,7 +290,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           child: DropdownButton<String>(
                             isExpanded: true,
                             icon: Icon(Icons.keyboard_arrow_down),
-                            //iconDisabledColor: Colors.grey,
                             iconEnabledColor: Colors.lightBlue,
                             style: TextStyle(
                                 color: Colors.lightBlue,
@@ -324,147 +323,153 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: size.height - 200,
-                    alignment: Alignment.center,
-                    child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: dropDownValue == 'All Transactions'
-                            ? dailySelected
-                                ? displayDayTransactions(dateSelected)
-                                : displayMonthTransactions(
-                                    monthSelected, yearSelected)
-                            : dailySelected
-                                ? displayDayTransactionsByType(
-                                    dateSelected, dropDownValue)
-                                : displayMonthTransactionsByType(monthSelected,
-                                    yearSelected, dropDownValue)),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: dropDownValue == 'All Transactions'
+                              ? dailySelected
+                                  ? displayDayTransactions(dateSelected)
+                                  : displayMonthTransactions(
+                                      monthSelected, yearSelected)
+                              : dailySelected
+                                  ? displayDayTransactionsByType(
+                                      dateSelected, dropDownValue)
+                                  : displayMonthTransactionsByType(
+                                      monthSelected,
+                                      yearSelected,
+                                      dropDownValue)),
+                    ),
                   ),
+                  SizedBox(
+                    height: 48,
+                  )
                 ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget getDates() {
-    var size = MediaQuery.of(context).size;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 30,
-          child: IconButton(
-            iconSize: 16,
-            icon: Icon(Icons.arrow_left),
-            onPressed: () => {
-              setState(() {
-                date1 = date1!.subtract(Duration(days: 7));
-                date2 = date2!.subtract(Duration(days: 7));
-                date3 = date3!.subtract(Duration(days: 7));
-                date4 = date4!.subtract(Duration(days: 7));
-                date5 = date5!.subtract(Duration(days: 7));
-                date6 = date6!.subtract(Duration(days: 7));
-                date7 = date7!.subtract(Duration(days: 7));
-              })
-            },
-          ),
-        ),
         Expanded(
+          flex: 1,
           child: Container(
-            height: 70,
-            //width: size.width - 80,
-            child: ListView(
-              itemExtent: (size.width - 80) / 7,
-              scrollDirection: Axis.horizontal,
-              children:
-                  //dailySelected ?
-                  [
-                DateMonthListTile(
-                    day: days[0],
-                    date: date1!,
-                    dateSelected: dateSelected,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date1!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[1],
-                    date: date2!,
-                    dateSelected: dateSelected,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date2!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[2],
-                    date: date3!,
-                    dateSelected: dateSelected,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date3!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[3],
-                    date: date4!,
-                    dateSelected: dateSelected,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date4!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[4],
-                    dateSelected: dateSelected,
-                    date: date5!,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date5!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[5],
-                    dateSelected: dateSelected,
-                    date: date6!,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date6!;
-                          })
-                        }),
-                DateMonthListTile(
-                    day: days[6],
-                    dateSelected: dateSelected,
-                    date: date7!,
-                    onTap: () => {
-                          setState(() {
-                            dateSelected = date7!;
-                          })
-                        }),
-              ],
+            child: IconButton(
+              iconSize: 16,
+              icon: Icon(Icons.arrow_left),
+              onPressed: () => {
+                setState(() {
+                  date1 = date1!.subtract(Duration(days: 7));
+                  date2 = date2!.subtract(Duration(days: 7));
+                  date3 = date3!.subtract(Duration(days: 7));
+                  date4 = date4!.subtract(Duration(days: 7));
+                  date5 = date5!.subtract(Duration(days: 7));
+                  date6 = date6!.subtract(Duration(days: 7));
+                  date7 = date7!.subtract(Duration(days: 7));
+                })
+              },
             ),
           ),
         ),
-        Container(
-          width: 30,
-          child: IconButton(
-            iconSize: 16,
-            icon: Icon(Icons.arrow_right),
-            onPressed: () => {
-              setState(() {
-                date1 = date1!.add(Duration(days: 7));
-                date2 = date2!.add(Duration(days: 7));
-                date3 = date3!.add(Duration(days: 7));
-                date4 = date4!.add(Duration(days: 7));
-                date5 = date5!.add(Duration(days: 7));
-                date6 = date6!.add(Duration(days: 7));
-                date7 = date7!.add(Duration(days: 7));
-              })
-            },
+        Expanded(
+          flex: 7,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              DateMonthListTile(
+                  day: days[0],
+                  date: date1!,
+                  dateSelected: dateSelected,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date1!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[1],
+                  date: date2!,
+                  dateSelected: dateSelected,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date2!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[2],
+                  date: date3!,
+                  dateSelected: dateSelected,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date3!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[3],
+                  date: date4!,
+                  dateSelected: dateSelected,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date4!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[4],
+                  dateSelected: dateSelected,
+                  date: date5!,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date5!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[5],
+                  dateSelected: dateSelected,
+                  date: date6!,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date6!;
+                        })
+                      }),
+              DateMonthListTile(
+                  day: days[6],
+                  dateSelected: dateSelected,
+                  date: date7!,
+                  onTap: () => {
+                        setState(() {
+                          dateSelected = date7!;
+                        })
+                      }),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            child: IconButton(
+              iconSize: 16,
+              icon: Icon(Icons.arrow_right),
+              onPressed: () => {
+                setState(() {
+                  date1 = date1!.add(Duration(days: 7));
+                  date2 = date2!.add(Duration(days: 7));
+                  date3 = date3!.add(Duration(days: 7));
+                  date4 = date4!.add(Duration(days: 7));
+                  date5 = date5!.add(Duration(days: 7));
+                  date6 = date6!.add(Duration(days: 7));
+                  date7 = date7!.add(Duration(days: 7));
+                })
+              },
+            ),
           ),
         ),
       ],
@@ -472,46 +477,44 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   Widget getMonths() {
-    var size = MediaQuery.of(context).size;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 30,
-          child: IconButton(
-            iconSize: 16,
-            icon: Icon(Icons.arrow_left),
-            onPressed: () => {
-              setState(() {
-                if (month1 == 1) {
-                  month1 = 7;
-                  month2 = 8;
-                  month3 = 9;
-                  month4 = 10;
-                  month5 = 11;
-                  month6 = 12;
-                  year1 = year1! - 1;
-                } else {
-                  month1 = 1;
-                  month2 = 2;
-                  month3 = 3;
-                  month4 = 4;
-                  month5 = 5;
-                  month6 = 6;
-                }
-              })
-            },
+        Expanded(
+          flex: 1,
+          child: Container(
+            child: IconButton(
+              iconSize: 16,
+              icon: Icon(Icons.arrow_left),
+              onPressed: () => {
+                setState(() {
+                  if (month1 == 1) {
+                    month1 = 7;
+                    month2 = 8;
+                    month3 = 9;
+                    month4 = 10;
+                    month5 = 11;
+                    month6 = 12;
+                    year1 = year1! - 1;
+                  } else {
+                    month1 = 1;
+                    month2 = 2;
+                    month3 = 3;
+                    month4 = 4;
+                    month5 = 5;
+                    month6 = 6;
+                  }
+                })
+              },
+            ),
           ),
         ),
-        Container(
-          height: 70,
-          width: size.width - 80,
-          child: ListView(
-            itemExtent: (size.width - 80) / 6,
-            scrollDirection: Axis.horizontal,
-            children:
-                //dailySelected ?
-                [
+        Expanded(
+          flex: 6,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               MonthYearListTile(
                   month: month1!,
                   monthSelected: monthSelected,
@@ -581,31 +584,33 @@ class _TransactionsPageState extends State<TransactionsPage> {
             ],
           ),
         ),
-        Container(
-          width: 30,
-          child: IconButton(
-            iconSize: 16,
-            icon: Icon(Icons.arrow_right),
-            onPressed: () => {
-              setState(() {
-                if (month1 == 1) {
-                  month1 = 7;
-                  month2 = 8;
-                  month3 = 9;
-                  month4 = 10;
-                  month5 = 11;
-                  month6 = 12;
-                } else {
-                  month1 = 1;
-                  month2 = 2;
-                  month3 = 3;
-                  month4 = 4;
-                  month5 = 5;
-                  month6 = 6;
-                  year1 = year1! + 1;
-                }
-              })
-            },
+        Expanded(
+          flex: 1,
+          child: Container(
+            child: IconButton(
+              iconSize: 16,
+              icon: Icon(Icons.arrow_right),
+              onPressed: () => {
+                setState(() {
+                  if (month1 == 1) {
+                    month1 = 7;
+                    month2 = 8;
+                    month3 = 9;
+                    month4 = 10;
+                    month5 = 11;
+                    month6 = 12;
+                  } else {
+                    month1 = 1;
+                    month2 = 2;
+                    month3 = 3;
+                    month4 = 4;
+                    month5 = 5;
+                    month6 = 6;
+                    year1 = year1! + 1;
+                  }
+                })
+              },
+            ),
           ),
         ),
       ],
@@ -795,18 +800,18 @@ class DateMonthListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10, left: 5, right: 5),
-      child: Column(
-        children: [
-          Text(
-            day,
-            style: weekdayText,
-          ),
-          SizedBox(height: 5),
-          SizedBox(
-            height: 40,
-            child: TextButton(
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Column(
+          children: [
+            Text(
+              day,
+              style: weekdayText,
+            ),
+            SizedBox(height: 4),
+            TextButton(
               style: (dateSelected == date)
                   ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
                   : null,
@@ -825,8 +830,8 @@ class DateMonthListTile extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -848,40 +853,36 @@ class MonthYearListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 60,
-            child: TextButton(
-              style: (monthSelected == month && yearSelected == year)
-                  ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
-                  : null,
-              onPressed: onTap,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    Months.values[month - 1].toString().substring(7, 10),
-                    style: dayText,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    year.toString(),
-                    style: dayText.copyWith(
-                        fontSize: 9, fontWeight: FontWeight.normal),
-                  ),
-                ],
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 2),
+        child: TextButton(
+          style: (monthSelected == month && yearSelected == year)
+              ? TextButton.styleFrom(backgroundColor: Colors.lightBlue[50])
+              : null,
+          onPressed: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Text(
+                  Months.values[month - 1].toString().substring(7, 10),
+                  style: dayText,
+                ),
               ),
-            ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                year.toString(),
+                style: dayText.copyWith(
+                    fontSize: 9, fontWeight: FontWeight.normal),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

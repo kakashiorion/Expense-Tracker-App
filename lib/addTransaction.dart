@@ -13,41 +13,16 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction>
     with SingleTickerProviderStateMixin {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  late User loggedInUser;
-  late DocumentReference docRef;
-  late TransactionType transactionTypeSelected;
+  DocumentReference docRef = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.email);
+  TransactionType transactionTypeSelected = TransactionType.Food;
 
   int progressValue = 1;
-  late String transactionDetails;
-  late double? amountDetails;
+  String transactionDetails = '';
+  double? amountDetails = 0.0;
   DateTime dateDetails = DateTime.now();
   String currencySelected = 'INR';
-
-  @override
-  void initState() {
-    super.initState();
-    progressValue = 1;
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        docRef = _firestore.collection('users').doc(loggedInUser.email);
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +81,6 @@ class _AddTransactionState extends State<AddTransaction>
                                     Column(children: [
                                       Container(
                                         alignment: Alignment.topCenter,
-                                        //height: size.height / 2.5,
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
                                           child: Image.asset(
@@ -533,14 +507,15 @@ class _AddTransactionState extends State<AddTransaction>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               AnimatedSplashScreen(
-                                            duration: 2,
+                                            duration: 1000,
                                             backgroundColor: Colors.lightBlue,
                                             splash: Image(
+                                              fit: BoxFit.fill,
                                               image: AssetImage(
-                                                  'assets/images/gifts.png'),
+                                                  'assets/images/successTxn.gif'),
                                             ),
                                             nextScreen: TransactionSummaryPage(
-                                                txnId.id),
+                                                transactionId: txnId.id),
                                           ),
                                         ),
                                       );
@@ -552,7 +527,6 @@ class _AddTransactionState extends State<AddTransaction>
                                           fontFamily: 'Lato',
                                           fontWeight: FontWeight.normal),
                                     ),
-                                    // backgroundColor: Colors.lightBlue,
                                   ),
                                 ),
                               ),

@@ -1,7 +1,6 @@
 import 'package:expense_tracker_app/profilePage.dart';
 import 'package:expense_tracker_app/statisticsPage.dart';
 import 'package:expense_tracker_app/transactionsPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 import 'addTransaction.dart';
@@ -13,25 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
-  var activeIndex = 0;
-
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-      }
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
+  int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +23,8 @@ class _HomePageState extends State<HomePage> {
       child: SafeArea(
         child: Scaffold(
           floatingActionButton: SizedBox(
-            height: 45,
+            height: 48,
             child: FloatingActionButton(
-              //shape: CircleBorder(side: BorderSide(width: 0, color: Colors.white)),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -64,23 +44,6 @@ class _HomePageState extends State<HomePage> {
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: Colors.white,
           extendBody: true,
-          // appBar: PreferredSize(
-          //   preferredSize: Size.fromHeight(40),
-          //   child: AppBar(
-          //     centerTitle: false,
-          //     title: Text(
-          //       getAppBarTitle(activeIndex),
-          //       style: appBarTitleText,
-          //     ),
-          //     backgroundColor: Colors.white,
-          //     elevation: 2,
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.only(
-          //           bottomLeft: Radius.circular(8),
-          //           bottomRight: Radius.circular(8)),
-          //     ),
-          //   ),
-          // ),
           body: SwipeDetector(
             onSwipeRight: (Offset offset) => setState(() {
               activeIndex -= 1;
@@ -101,7 +64,8 @@ class _HomePageState extends State<HomePage> {
                         : ProfilePage(),
           ),
           bottomNavigationBar: BottomAppBar(
-            notchMargin: 0,
+            notchMargin: 2,
+            height: 64,
             color: Colors.black,
             shape: CircularNotchedRectangle(),
             child: BottomNavigationBar(

@@ -127,7 +127,6 @@ class _TransactionDetailTileState extends State<TransactionDetailTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //height: 48,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,34 +184,32 @@ class TransactionCard extends StatelessWidget {
   final String tId;
 
   Icon getIcon(String type) {
-    late Icon icon;
     if (type == TransactionType.Food.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.fastfood_outlined,
         color: Colors.black,
       );
     } else if (type == TransactionType.Shopping.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.shopping_basket_outlined,
         color: Colors.black,
       );
     } else if (type == TransactionType.Travel.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.flight_outlined,
         color: Colors.black,
       );
     } else if (type == TransactionType.Utility.toString().substring(16)) {
-      icon = Icon(
+      return Icon(
         Icons.wb_incandescent_outlined,
         color: Colors.black,
       );
-    } else if (type == TransactionType.Income.toString().substring(16)) {
-      icon = Icon(
+    } else {
+      return Icon(
         Icons.attach_money_outlined,
         color: Colors.black,
       );
     }
-    return icon;
   }
 
   @override
@@ -226,12 +223,13 @@ class TransactionCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (builder) => TransactionSummaryPage(tId)));
+                builder: (builder) =>
+                    TransactionSummaryPage(transactionId: tId)));
       },
       child: Card(
         margin: EdgeInsets.all(0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(5.0),
@@ -246,7 +244,6 @@ class TransactionCard extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                //width: MediaQuery.of(context).size.width - 200,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,11 +267,11 @@ class TransactionCard extends StatelessWidget {
               ),
             ),
             Container(
-              width: 80,
-              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              alignment: Alignment.centerRight,
               child: Text(
                 value,
-                style: dayText,
+                style: type == "Income" ? greenText : dayText,
               ),
             )
           ],
@@ -449,6 +446,12 @@ const valueText =
 
 const dayText = TextStyle(
     color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.bold);
+
+const greenText = TextStyle(
+    color: Colors.green,
     fontSize: 12,
     fontFamily: 'Lato',
     fontWeight: FontWeight.bold);

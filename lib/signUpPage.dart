@@ -240,28 +240,49 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             onPressed: () async {
                               try {
-                                final newUser =
-                                    await _auth.createUserWithEmailAndPassword(
-                                        email: email, password: password);
-                                users.doc(email).set({
-                                  'Name': name,
-                                  'Email': email,
-                                  'Password': password,
-                                  'Date Of Birth': dob
+                                bool docRefExists = await FirebaseFirestore
+                                    .instance
+                                    .collection('users')
+                                    .doc(email)
+                                    .get()
+                                    .then((value) {
+                                  return value.exists;
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Created account for: ${newUser.user!.email}'),
-                                    action: SnackBarAction(
-                                      label: 'Login Page',
-                                      onPressed: () {
-                                        Navigator.pop(
-                                            context, newUser.user!.email);
-                                      },
+                                //Has user already signed up?
+                                if (docRefExists) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'User with this email already exists.. Try Login!'),
+                                        );
+                                      });
+                                } else {
+                                  final newUser = await _auth
+                                      .createUserWithEmailAndPassword(
+                                          email: email, password: password);
+                                  users.doc(email).set({
+                                    'Name': name,
+                                    'Email': email,
+                                    'Password': password,
+                                    'Date Of Birth': dob,
+                                    'Photo Location': ""
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Created account for: ${newUser.user!.email}'),
+                                      action: SnackBarAction(
+                                        label: 'Login Page',
+                                        onPressed: () {
+                                          Navigator.pop(
+                                              context, newUser.user!.email);
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               } on FirebaseAuthException catch (e) {
                                 print(e);
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -309,48 +330,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ],
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(
-                //     top: 10,
-                //     left: 30,
-                //     right: 30,
-                //     bottom: 10,
-                //   ),
-                //   child: Container(
-                //     height: 70,
-                //     alignment: Alignment.center,
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         Text(
-                //           'or',
-                //           style: TextStyle(
-                //               fontSize: 12, fontFamily: 'Lato', fontWeight: FontWeight.bold),
-                //         ),
-                //         OutlinedButton(
-                //           onPressed: () {},
-                //           style: ButtonStyle(
-                //               side: MaterialStateProperty.all(BorderSide(color: Colors.lightBlue))),
-                //           child: Container(
-                //             width: 200,
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //               children: [
-                //                 Icon(
-                //                   Icons.group_add,
-                //                 ),
-                //                 Text(
-                //                   'Sign up with Google',
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
