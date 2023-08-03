@@ -219,20 +219,20 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0, left: 30),
-                  child: Text(
-                    'Password',
-                    style: titleText,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0, left: 30),
-                  child: Text(
-                    '******',
-                    style: appBarTitleText,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 30.0, left: 30),
+                //   child: Text(
+                //     'Password',
+                //     style: titleText,
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0, left: 30),
+                //   child: Text(
+                //     '******',
+                //     style: appBarTitleText,
+                //   ),
+                // ),
               ],
             ),
           ),

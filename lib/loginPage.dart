@@ -308,7 +308,8 @@ class _LoginPageState extends State<LoginPage> {
                                               'Email': user!.email,
                                               'Photo Location': user!.photoURL,
                                               'Name': user!.displayName,
-                                            }, SetOptions(merge: true))
+                                              'Date Of Birth': "N/A"
+                                            })
                                           }
                                       });
                                   await Navigator.push(context,
