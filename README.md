@@ -1,4 +1,4 @@
-# Welcome to Garden Journal App
+# Welcome to Expense Tracker App
 
 A personal finance mobile app for tracking expenses and budgeting
 
