@@ -1,16 +1,25 @@
-# expense_tracker_app
+# Welcome to Garden Journal App
 
-A new Flutter application to track your expenses.
+A personal finance mobile app for tracking expenses and budgeting
 
-## Getting Started
+![Cover image](/assets/images/ET_BG.png)
 
-This project is a starting point for a Flutter application.
+## Technologies
 
-A few resources to get you started if this is your first Flutter project:
+Built with Flutter.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Uses Firebase for online storage of data.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## About
+
+The app can be downloaded from:
+
+[Google Drive APK Link](https://drive.google.com/drive/u/0/folders/1atgBxQzbCdNSRrds6noeQ2sbJyVG8857)
+
+## Demo
+
+You can watch a quick [demo video here](https://www.youtube.com/watch?v=gGJ1nV5cT9k)
+
+## Portfolio
+
+You may also like to check out my [Portfolio](https://kakashiorion.github.io/portfolio-website/)
